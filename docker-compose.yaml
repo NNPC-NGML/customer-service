@@ -1,49 +1,47 @@
 version: "3.2"
 services:
-  boilerplate:
+  customer-service:
     build:
       context: .
       dockerfile: Dockerfile
     command: "php artisan serve --host=0.0.0.0"
     volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - .:/app
     ports:
-      - 1010:8000
+      - 1040:8000
     networks:
-      - boilerplate_network
+      - customer_network
 
-  boilerplate_queue:
+  customer_queue:
     build:
       context: .
       dockerfile: Dockerfile
     command: "php artisan queue:work"
     networks:
-      - boilerplate_network
+      - customer_network
 
   mysql:
     image: mariadb:10.5.8
     environment:
-      - MYSQL_ROOT_PASSWORD=forge
-      - MYSQL_DATABASE=processflow
+      - MYSQL_ROOT_PASSWORD=Ubuxa##99
+      - MYSQL_DATABASE=forge
       - MYSQL_USER=forge
-      - MYSQL_PASSWORD=forge
+      - MYSQL_PASSWORD=Ubuxa##99
     networks:
-      - boilerplate_network
+      - customer_network
   # phpmyadmin
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - "1012:80"
+      - 1041:80
     environment:
       - PMA_HOST=mysql
-      - PMA_PASSWORD=forge
+      - PMA_PASSWORD=Ubuxa##99
     networks:
-      - boilerplate_network
+      - customer_network
     restart: unless-stopped
     volumes:
-      - ./:/app
+      - .:/app
 
 networks:
-  boilerplate_network:
+  communication_network:
