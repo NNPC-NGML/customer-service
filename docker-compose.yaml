@@ -44,4 +44,4 @@ services:
       - .:/app
 
 networks:
-  communication_network:
+  customer_network:
