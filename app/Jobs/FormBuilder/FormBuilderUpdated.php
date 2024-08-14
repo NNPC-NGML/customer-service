@@ -2,6 +2,7 @@
 
 namespace App\Jobs\FormBuilder;
 
+use App\Services\DDQService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -34,5 +35,7 @@ class FormBuilderUpdated implements ShouldQueue
         $service = new FormService();
         $data = $this->data;
         $service->updateForm($data, $this->id);
+        $service = new DDQService();
+        if($service->isDDQData($data['name'])) $service->update($data);
     }
 }

@@ -56,6 +56,42 @@ class DDQService
     }
 
     /**
+     * Updates a customer's DDQ entry based on the provided request data.
+     *
+     * @param array $request The request data containing the JSON form and other fields.
+     * @return void
+     * @throws ValidationException If the validation fails.
+     */
+    public function update(array $request): void
+    {
+        $data = is_array($request['json_form']) ? $request['json_form'] : json_decode($request['json_form'], true);
+        $group_id = $data['group_id'];
+        $subgroup_id = $data['subgroup_id'];
+        $customer_id = $data['customer_id'];
+        $customer_site_id = $data['customer_site_id'];
+        $created_by_user_id = $data['created_by_user_id'];
+
+        foreach ($data as $key => $value) {
+            if ($key === 'group_id' || $key === 'subgroup_id') continue;
+            if (is_array($value)) {
+                $ddq_data = [
+                    'data' => $value['data'],
+                    'customer_id' => $customer_id,
+                    'customer_site_id' => $customer_site_id,
+                    'group_id' => $group_id,
+                    'subgroup_id' => $subgroup_id,
+                    'document_type' => $value['document_type'],
+                    'created_by_user_id' => $created_by_user_id
+                ];
+                $data = $this->validate($ddq_data);
+                CustomerDdq::where('customer_id', $customer_id)
+                    ->where('created_by_user_id', $created_by_user_id)
+                    ->update($data);
+            }
+        }
+    }
+
+    /**
      * Validate the provided DDQ data.
      *
      * @param array $data The data to be validated.
