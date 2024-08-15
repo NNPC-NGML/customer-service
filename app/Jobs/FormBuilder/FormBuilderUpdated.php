@@ -35,7 +35,7 @@ class FormBuilderUpdated implements ShouldQueue
         $service = new FormService();
         $data = $this->data;
         $service->updateForm($data, $this->id);
-        $service = new DDQService();
-        if($service->isDDQData($data['name'])) $service->update($data);
+        // $service = new DDQService();
+        // if($service->isDDQData($data['name'])) $service->update($data);
     }
 }

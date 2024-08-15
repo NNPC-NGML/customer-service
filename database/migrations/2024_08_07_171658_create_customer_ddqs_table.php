@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer("subgroup_id")->comment();
             $table->enum("document_type", ["string", "file"])->comment();
             $table->integer("created_by_user_id")->comment();
-            $table->enum('status', ['pending', 'approved', 'declined'])->default('pending')->comment('pending, approved, declined status of ddq');
+            // $table->enum('status', ['pending', 'approved', 'declined'])->default('pending')->comment('pending, approved, declined status of ddq');
             $table->timestamps();
         });
     }

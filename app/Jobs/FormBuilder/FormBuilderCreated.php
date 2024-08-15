@@ -31,7 +31,7 @@ class FormBuilderCreated implements ShouldQueue
         $service = new FormService();
         $data = $this->data;
         $service->createForm($data);
-        $service = new DDQService();
-        if($service->isDDQData($data['name'])) $service->create($data);
+        // $service = new DDQService();
+        // if($service->isDDQData($data['name'])) $service->create($data);
     }
 }

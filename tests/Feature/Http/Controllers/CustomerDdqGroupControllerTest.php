@@ -6,11 +6,22 @@ use App\Models\CustomerDdqGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Class CustomerDdqGroupControllerTest
+ *
+ * This class contains feature tests for the Customer DDQ Group management.
+ *
+ * @package Tests\Feature\Http\Controllers
+ */
 class CustomerDdqGroupControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    /**
+     * Test if a DDQ group can be created.
+     *
+     * @return void
+     */
     public function it_can_create_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
@@ -26,7 +37,11 @@ class CustomerDdqGroupControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Test if all DDQ groups can be listed.
+     *
+     * @return void
+     */
     public function it_can_list_all_ddq_groups()
     {
         $this->actingAsAuthenticatedTestUser();
@@ -38,7 +53,11 @@ class CustomerDdqGroupControllerTest extends TestCase
                  ->assertJsonCount(3);
     }
 
-    /** @test */
+    /**
+     * Test if a single DDQ group can be viewed.
+     *
+     * @return void
+     */
     public function it_can_view_a_single_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
@@ -53,7 +72,11 @@ class CustomerDdqGroupControllerTest extends TestCase
                  ]);
     }
 
-    /** @test */
+    /**
+     * Test if a DDQ group can be updated.
+     *
+     * @return void
+     */
     public function it_can_update_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
@@ -74,7 +97,11 @@ class CustomerDdqGroupControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Test if a DDQ group can be deleted.
+     *
+     * @return void
+     */
     public function it_can_delete_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
