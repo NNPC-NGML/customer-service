@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\CustomerContractTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,14 @@ class CustomerContractSectionFactory extends Factory
      */
     public function definition(): array
     {
+        $contract = CustomerContractTemplate::factory();
         return [
-            //
+            'customer_id' => User::factory()->create()->id,
+            'customer_site_id' => $this->faker->numberBetween(1, 100),
+            'contract_id' => CustomerContractTemplate::factory()->create()->id,
+            'title_id' => $this->faker->unique()->word,
+            'created_by_user_id' => User::factory()->create()->id,
+            'status' => $this->faker->boolean(),
         ];
     }
 }

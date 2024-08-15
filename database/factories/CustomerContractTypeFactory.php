@@ -17,7 +17,8 @@ class CustomerContractTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->words(3, true),
+            'status' => $this->faker->randomElement([0, 1]),
         ];
     }
 }

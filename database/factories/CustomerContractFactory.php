@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,14 @@ class CustomerContractFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customer_id' =>
+            User::factory()->create()->id,
+            'customer_site_id' => $this->faker->numberBetween(1, 1000),
+            'contract_type_id' => $this->faker->numberBetween(1, 10),
+            'created_by_user_id' =>
+            User::factory()->create()->id,
+            'before_erp' => $this->faker->boolean,
+            'status' => $this->faker->boolean,
         ];
     }
 }
