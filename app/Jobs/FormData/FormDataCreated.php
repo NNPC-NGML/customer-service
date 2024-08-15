@@ -28,8 +28,8 @@ class FormDataCreated implements ShouldQueue
      */
     public function handle(): void
     {
-        // this would be used by other services to determine how to handle the data that comes 
-        // get all tags 
+        // this would be used by other services to determine how to handle the data that comes
+        // get all tags
         $tagModel = Tag::all();
         $fetschedData = $this->data['tag']["name"];
         foreach ($tagModel as $tag) {
@@ -39,12 +39,12 @@ class FormDataCreated implements ShouldQueue
             }
         }
 
-        //pull the data from the queue data and point it the class that would handle it 
+        //pull the data from the queue data and point it the class that would handle it
         //use incoming class and method from queue and also pass the data thats coming in
         // this section can be ignored if you want or commented out if you want
 
-        $service = new FormService();
-        $data = $this->data;
-        $service->createFormData($data);
+        // $service = new FormService();
+        // $data = $this->data;
+        // $service->createFormData($data);
     }
 }
