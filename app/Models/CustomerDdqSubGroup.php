@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerDdqSubGroup extends Model
 {
     use HasFactory;
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
+    protected $fillable = [
+        'title',
+        'customer_ddq_group_id',
+        'status'
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 }
