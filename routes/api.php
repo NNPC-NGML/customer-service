@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CustomerDdqController;
+use App\Http\Controllers\CustomerDdqGroupController;
+use App\Http\Controllers\CustomerDdqSubGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
@@ -20,6 +23,11 @@ Route::middleware('scope.user')->group(function () {
     Route::get('/protected', function () {
         return response()->json(['message' => 'Access granted']);
     });
+    Route::apiResource('ddq-groups', CustomerDdqGroupController::class);
+    Route::apiResource('ddq-subgroups', CustomerDdqSubGroupController::class);
+    Route::post('ddqs/approve/{id}', [CustomerDdqController::class, 'approve']);
+    Route::post('ddqs/decline/{id}', [CustomerDdqController::class, 'decline']);
+    Route::get('ddqs/view/{customer_id}/{site_id}/{group_id}/{subgroup_id}', [CustomerDdqController::class, 'showDDQ']);
 });
 
 
