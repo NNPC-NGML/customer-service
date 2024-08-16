@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Skillz\Nnpcreusable\Service\CustomerService;
+// use Skillz\Nnpcreusable\Service\CustomerService;
 
 class CreateCustomerJob implements ShouldQueue
 {
