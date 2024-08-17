@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Customer;
 use App\Jobs\Customer\CreateCustomerJob;
+use Illuminate\Database\Eloquent\Collection;
 
 class CustomerService
 {
@@ -30,4 +31,14 @@ class CustomerService
   //      $data['password'] = bcrypt($data['password']);
   //      return Customer::create($data);
    // }
+
+    /**
+     * Get all customers.
+     *
+     * @return Collection
+     */
+    public function getAllCustomers(): Collection
+    {
+        return Customer::all();
+    }
 }

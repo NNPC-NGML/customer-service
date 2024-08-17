@@ -70,4 +70,33 @@ class CustomerController extends Controller
 
         return response()->json(['message' => 'Customer creation job dispatched.'], 201);
     }
+
+    /**
+ * @OA\Get(
+ *     path="/api/customers",
+ *     summary="Get a list of all customers",
+ *     tags={"Customers"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of customers",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Customer"))
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal server error"
+ *     )
+ * )
+ */
+    /**
+     * Retrieve a list of all customers.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $customers = $this->customerService->getAllCustomers();
+        return response()->json($customers);
+    }
 }
+
+    
