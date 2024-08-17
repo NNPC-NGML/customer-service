@@ -98,6 +98,35 @@ class CustomerController extends Controller
         return response()->json($customers);
     }
 
+
+    /**
+ * @OA\Get(
+ *     path="/api/customers/{id}",
+ *     operationId="getCustomerById",
+ *     tags={"Customers"},
+ *     summary="Get a customer by ID",
+ *     description="Returns a customer",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="Customer ID",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="integer"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(ref="#/components/schemas/Customer")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Customer not found"
+ *     ),
+ * )
+ */
+
     /**
      * Retrieve a specific customer by ID.
      *
