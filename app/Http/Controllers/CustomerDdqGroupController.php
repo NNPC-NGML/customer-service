@@ -22,14 +22,14 @@ use App\Http\Resources\CustomerDdqGroupResource;
 class CustomerDdqGroupController extends Controller
 {
     /**
-     * @var DDQService Service for validating DDQ groups.
+     * @var DDQService
      */
     protected DDQService $ddqService;
 
     /**
      * CustomerDdqGroupController constructor.
      *
-     * @param DDQService $ddqService The DDQ service instance for validating DDQ groups.
+     * @param DDQService $ddqService
      */
     public function __construct(DDQService $ddqService)
     {
@@ -59,11 +59,18 @@ class CustomerDdqGroupController extends Controller
      */
     public function index(): JsonResponse
     {
-        $groups = CustomerDdqGroup::all();
-        return response()->json([
-            'status' => 'success',
-            'data' => CustomerDdqGroupResource::collection($groups)
-        ]);
+        try {
+            $groups = $this->ddqService->getAllCustomerDdqGroups();
+            return response()->json([
+                'status' => 'success',
+                'data' => CustomerDdqGroupResource::collection($groups)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 500);
+        }
     }
 
     /**
@@ -93,12 +100,19 @@ class CustomerDdqGroupController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $data = $this->ddqService->validateDDQGroup($request->all());
-        $group = CustomerDdqGroup::create($data);
-        return response()->json([
-            'status' => 'success',
-            'data' => new CustomerDdqGroupResource($group)
-        ], 201);
+        try {
+            $data = $this->ddqService->validateDDQGroup($request->all());
+            $group = $this->ddqService->createACustomerDdqGroup($data);
+            return response()->json([
+                'status' => 'success',
+                'data' => new CustomerDdqGroupResource($group)
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**
@@ -124,13 +138,20 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function show($id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $group = CustomerDdqGroup::findOrFail($id);
-        return response()->json([
-            'status' => 'success',
-            'data' => new CustomerDdqGroupResource($group)
-        ]);
+        try {
+            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            return response()->json([
+                'status' => 'success',
+                'data' => new CustomerDdqGroupResource($group)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 404);
+        }
     }
 
     /**
@@ -164,15 +185,22 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
-        $data = $this->ddqService->validateDDQGroup($request->all());
-        $group = CustomerDdqGroup::findOrFail($id);
-        $group->update($data);
-        return response()->json([
-            'status' => 'success',
-            'data' => new CustomerDdqGroupResource($group)
-        ]);
+        try {
+            $data = $this->ddqService->validateDDQGroup($request->all());
+            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            $group->update($data);
+            return response()->json([
+                'status' => 'success',
+                'data' => new CustomerDdqGroupResource($group)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 400);
+        }
     }
 
     /**
@@ -197,12 +225,19 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $group = CustomerDdqGroup::findOrFail($id);
-        $group->delete();
-        return response()->json([
-            'status' => 'success'
-        ], 204);
+        try {
+            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            $group->delete();
+            return response()->json([
+                'status' => 'success'
+            ], 204);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 404);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\CustomerDdq;
+use App\Models\CustomerDdqGroup;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -159,4 +160,19 @@ class DDQService
 
     //     return $data;
     // }
+
+    public function getAllCustomerDdqGroups()
+    {
+        return CustomerDdqGroup::all();
+    }
+
+    public function createACustomerDdqGroup(array $data)
+    {
+        return CustomerDdqGroup::create($data);
+    }
+
+    public function findACustomerDdqGroupById(int $id)
+    {
+        return CustomerDdqGroup::findOrFail($id);
+    }
 }
