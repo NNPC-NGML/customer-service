@@ -41,4 +41,9 @@ class CustomerService
     {
         return Customer::all();
     }
+
+    public function showCustomer(int $id): ?Customer
+    {
+        return Customer::find($id);
+    }
 }

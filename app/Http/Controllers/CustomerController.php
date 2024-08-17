@@ -97,6 +97,23 @@ class CustomerController extends Controller
         $customers = $this->customerService->getAllCustomers();
         return response()->json($customers);
     }
+
+    /**
+     * Retrieve a specific customer by ID.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show($id)
+    {
+        $customer = $this->customerService->showCustomer($id);
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found.'], 404);
+        }
+
+        return response()->json($customer, 200);
+    }
 }
 
     
