@@ -5,10 +5,11 @@ namespace App\Services;
 use App\Models\CustomerSiteSurveyFinding;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CustomerSiteSurveyFindingService
 {
-     /**
+    /**
      * Validate and create a new survey finding.
      *
      * @param array $data
@@ -17,7 +18,7 @@ class CustomerSiteSurveyFindingService
      */
     public function createSurveyFinding(array $data): CustomerSiteSurveyFinding
     {
-          $rules = [
+        $rules = [
             'customer_id' => 'required|integer|exists:users,id',
             'customer_site_id' => 'required|integer|exists:customer_sites,id',
             'file_path' => 'required|string|max:255',
@@ -33,7 +34,7 @@ class CustomerSiteSurveyFindingService
         return CustomerSiteSurveyFinding::create($data);
     }
 
-      /**
+    /**
      * Validate and update an existing survey finding.
      *
      * @param int $id
@@ -61,5 +62,18 @@ class CustomerSiteSurveyFindingService
         $surveyFinding->update($data);
 
         return $surveyFinding;
+    }
+
+    /**
+     * Delete a survey finding by its ID.
+     *
+     * @param int $id
+     * @return bool
+     * @throws ModelNotFoundException
+     */
+    public function deleteSurveyFinding(int $id): bool
+    {
+        $surveyFinding = CustomerSiteSurveyFinding::findOrFail($id);
+        return $surveyFinding->delete();
     }
 }

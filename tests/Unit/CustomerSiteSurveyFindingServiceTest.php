@@ -6,6 +6,7 @@ use App\Models\CustomerSite;
 use App\Models\CustomerSiteSurveyFinding;
 use App\Models\User;
 use App\Services\CustomerSiteSurveyFindingService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -113,4 +114,23 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
 
         $this->assertDatabaseMissing('customer_site_survey_findings', $invalidUpdateData);
     }
+
+        /** @test */
+        public function it_deletes_a_survey_finding_successfully()
+        {
+            $deleted = $this->surveyFindingService->deleteSurveyFinding($this->surveyFinding->id);
+
+            $this->assertTrue($deleted);
+            $this->assertDatabaseMissing('customer_site_survey_findings', ['id' => $this->surveyFinding->id]);
+        }
+
+        /** @test */
+        public function it_throws_model_not_found_exception_if_survey_finding_does_not_exist()
+        {
+            $nonExistentId = 999;
+
+            $this->expectException(ModelNotFoundException::class);
+
+            $this->surveyFindingService->deleteSurveyFinding($nonExistentId);
+        }
 }
