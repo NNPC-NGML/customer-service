@@ -17,7 +17,12 @@ class CustomerCapexApprovalFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customer_id' => \App\Models\User::factory(),
+            'customer_site_id' => \App\Models\CustomerSite::factory(),
+            'approval_type_id' => 1, // Assuming this is a valid ID, adjust as necessary
+            'approved_by_user_id' => \App\Models\User::factory(),
+            'comment' => $this->faker->sentence,
+            'status' => $this->faker->boolean,
         ];
     }
 }

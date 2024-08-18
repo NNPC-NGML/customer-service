@@ -19,7 +19,7 @@ COPY . /app
 
 # Install application dependencies
 
-RUN composer install
+
 
 # Expose the port and start the PHP server
 EXPOSE $PORT
