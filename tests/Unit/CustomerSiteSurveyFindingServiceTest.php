@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Models\CustomerSite;
 use App\Models\CustomerSiteSurveyFinding;
 use App\Models\User;
 use App\Services\CustomerSiteSurveyFindingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class CustomerSiteSurveyFindingServiceTest extends TestCase
@@ -26,6 +26,11 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
      */
     private $customer;
 
+     /**
+     * @var CustomerSite
+     */
+    private $customerSite;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -33,6 +38,7 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->customer = User::factory()->create();
+        $this->customerSite = CustomerSite::factory()->create();
     }
 
     /** @test */
@@ -40,7 +46,7 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
     {
         $data = [
             'customer_id' => $this->customer->id,
-            'customer_site_id' => $this->customer->id,
+            'customer_site_id' => $this->customerSite->id,
             'file_path' => 'path/to/file.pdf',
             'created_by_user_id' => $this->user->id,
             'status' => true,
@@ -57,13 +63,13 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
     {
         $invalidData = [
             // 'customer_id' => $this->customer->id, // This is missing
-            'customer_site_id' => $this->customer->id,
+            'customer_site_id' => $this->customerSite->id,
             'file_path' => 'path/to/file.pdf',
             'created_by_user_id' => $this->user->id,
             'status' => true,
         ];
 
-        $this->expectException(\Illuminate\Database\QueryException::class);
+        $this->expectException(ValidationException::class);
 
         $this->surveyFindingService->createSurveyFinding($invalidData);
 
