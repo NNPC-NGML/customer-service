@@ -17,7 +17,8 @@ class CustomerContractTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->randomElement(["GSPA", "EOI", "CAP", "GAS", "SLA"]),
+            'status' => $this->faker->boolean,
         ];
     }
 }
