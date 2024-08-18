@@ -136,7 +136,12 @@ class CustomerContractController extends Controller
      */
     public function destroy(CustomerContract $contract): JsonResponse
     {
-        $contract->delete();
-        return response()->json(null, 204);
+        try {
+
+            $this->service->remove($contract->id);
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete contract: ' . $e->getMessage()], 500);
+        }
     }
 }
