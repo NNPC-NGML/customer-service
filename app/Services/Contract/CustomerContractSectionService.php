@@ -14,25 +14,25 @@ class CustomerContractSectionService
         return CustomerContractSection::create($validatedData);
     }
 
-    // public function update(int $id, array $data): CustomerContractSection
-    // {
-    //     $section = $this->getById($id);
-    //     if (!$section) {
-    //         throw new \Exception("CustomerContractSection not found");
-    //     }
-    //     $validatedData = $this->validate($data, $id, true);
-    //     $section->update($validatedData);
-    //     return $section;
-    // }
+    public function update(int $id, array $data): CustomerContractSection
+    {
+        $section = $this->getById($id);
+        if (!$section) {
+            throw new \Exception("CustomerContractSection not found");
+        }
+        $validatedData = $this->validate($data, $id, true);
+        $section->update($validatedData);
+        return $section;
+    }
 
-    // public function delete(int $id): bool
-    // {
-    //     $section = $this->getById($id);
-    //     if (!$section) {
-    //         return false;
-    //     }
-    //     return $section->delete();
-    // }
+    public function delete(int $id): bool
+    {
+        $section = $this->getById($id);
+        if (!$section) {
+            return false;
+        }
+        return $section->delete();
+    }
 
     public function getById(int $id): ?CustomerContractSection
     {

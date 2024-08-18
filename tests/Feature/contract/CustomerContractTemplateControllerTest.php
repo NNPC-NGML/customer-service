@@ -36,9 +36,11 @@ class CustomerContractTemplateControllerTest extends TestCase
     {
 
         $this->actingAsAuthenticatedTestUser();
+        $this->actingAs($this->user);
         $templateData = [
             'title' => 'New Template Test',
             'status' => 1,
+
         ];
 
         $response = $this->postJson('/api/contract-templates', $templateData);

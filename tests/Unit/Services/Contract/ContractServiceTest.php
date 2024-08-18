@@ -6,9 +6,11 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\CustomerContract;
 use App\Models\CustomerContractType;
+use App\Models\CustomerContractSection;
 use App\Models\CustomerContractDetailsNew;
 use App\Models\CustomerContractDetailsOld;
 use App\Services\Contract\ContractService;
+use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contract\CustomerContractService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Contract\CustomerContractTypeService;
@@ -18,7 +20,7 @@ use App\Services\Contract\CustomerContractDetailsOldService;
 
 class ContractServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     private ContractService $service;
 
@@ -100,5 +102,40 @@ class ContractServiceTest extends TestCase
         ];
 
         $this->service->create($data);
+    }
+
+    public function testUpdate()
+    {
+
+
+        $user = User::factory()->create();
+        $contractType = CustomerContractType::create([
+            'title' => 'Existing Type',
+            'status' => true
+        ]);
+
+        $data = [
+            'contract_type_id' => $contractType->id,
+            'customer_id' => 1,
+            'customer_site_id' => 1,
+            'created_by_user_id' => $user->id,
+            'before_erp' => false,
+            'sections' => [
+                ['title' => 'SECTION1']
+            ]
+        ];
+
+        $result = $this->service->create($data);
+        $result->customer_id = 5;
+        $result->customer_site_id = 5;
+        $result->sections[0]->title = 'New Section 2 updated';
+
+
+        $updatedContract = $this->service->update($result->id, $result->toArray());
+
+        $this->assertInstanceOf(CustomerContract::class, $updatedContract);
+
+
+        $this->assertEquals('New Section 2 updated', $updatedContract->sections[0]->title);
     }
 }

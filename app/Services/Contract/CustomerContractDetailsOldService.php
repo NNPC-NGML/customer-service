@@ -14,6 +14,17 @@ class CustomerContractDetailsOldService
         return CustomerContractDetailsOld::create($validatedData);
     }
 
+    public function update(CustomerContractDetailsOld $detail, array $data): bool
+    {
+        $validatedData = $this->validate($data, $detail->id, true);
+        return $detail->update($validatedData);
+    }
+
+    public function delete(CustomerContractDetailsOld $detail): bool
+    {
+        return $detail->delete();
+    }
+
     public function getById(int $id): ?CustomerContractDetailsOld
     {
         return CustomerContractDetailsOld::find($id);

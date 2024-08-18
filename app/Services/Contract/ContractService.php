@@ -3,11 +3,7 @@
 namespace App\Services\Contract;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-
-
-
 
 class ContractService
 {
@@ -87,6 +83,202 @@ class ContractService
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception('Failed to create contract template: ' . $e->getMessage());
+        }
+    }
+
+    // public function update(int $id, array $data)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $contract = $this->contractService->getById($id);
+    //         if (!$contract) {
+    //             throw new \Exception("Contract not found");
+    //         }
+    //         if (isset($data['contract_type_id'])) {
+    //             $contractType = $this->contractTypeService->getById($data['contract_type_id']);
+    //             if (!$contractType) {
+    //                 throw new \Exception("Contract type not found");
+    //             }
+    //         }
+
+    //         $this->contractService->update($id, $data);
+
+    //         if ($contract && $contract->before_erp === true && isset($data['file_path'])) {
+    //             $this->contractDetailsOldService->update($data['file_path_id'], [
+    //                 'contract_id' => $contract->id,
+    //                 'file_path' => $data['file_path'],
+    //                 'customer_id' => $data['customer_id'],
+    //                 'customer_site_id' => $data['customer_site_id'],
+    //                 'created_by_user_id' => $data['created_by_user_id'],
+    //                 'status' => $data['status'],
+    //             ]);
+    //         }
+
+    //         if ($contract && $contract->before_erp === true &&  isset($data['sections'])) {
+    //             foreach ($data['sections'] as $section) {
+    //                 $this->contractSection->update($section->id, [
+    //                     'contract_id' => $contract->id,
+    //                     'title' => $section['title'],
+    //                     'customer_id' => $contract->customer_id,
+    //                     'customer_site_id' => $contract->customer_site_id,
+    //                     'created_by_user_id' => $contract->created_by_user_id,
+    //                     'status' => $section['status'],
+    //                 ]);
+    //             }
+    //         }
+    //         DB::commit();
+    //         return $contract;
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         throw new \Exception('Failed to update contract: ' . $e->getMessage());
+    //     }
+    // }
+
+    // public function update(int $id, array $data)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+
+    //         $contract = $this->contractService->getById($id);
+    //         if (!$contract) {
+    //             throw new \Exception("Contract not found");
+    //         }
+
+
+    //         if (isset($data['contract_type_id'])) {
+    //             $contractType = $this->contractTypeService->getById($data['contract_type_id']);
+    //             if (!$contractType) {
+    //                 throw new \Exception("Contract type not found");
+    //             }
+    //             $data['contract_type_id'] = $contractType->id;
+    //         }
+
+
+    //         $this->contractService->update($id, $data);
+
+    //         // Update contract details old (for before_erp contracts)
+    //         if ($contract->before_erp === true && isset($data['file_path'])) {
+    //             if (!isset($data['file_path_id'])) {
+    //                 throw new \Exception('File path ID is required for updating old contract details.');
+    //             }
+    //             $this->contractDetailsOldService->update($data['file_path_id'], [
+    //                 'contract_id' => $contract->id,
+    //                 'file_path' => $data['file_path'],
+    //                 'customer_id' => $data['customer_id'],
+    //                 'customer_site_id' => $data['customer_site_id'],
+    //                 'created_by_user_id' => $data['created_by_user_id'],
+    //                 'status' => $data['status'] ?? true,
+    //             ]);
+    //         }
+
+    //         // Update contract sections (for non-before_erp contracts)
+    //         if ($contract->before_erp === false && isset($data['sections'])) {
+    //             foreach ($data['sections'] as $section) {
+    //                 if (isset($section['id'])) {
+    //                     $this->contractSection->update($section['id'], [
+    //                         'contract_id' => $contract->id,
+    //                         'title' => $section['title'],
+    //                         'customer_id' => $data['customer_id'],
+    //                         'customer_site_id' => $data['customer_site_id'],
+    //                         'created_by_user_id' => $data['created_by_user_id'],
+    //                         'status' => $section['status'] ?? true,
+    //                     ]);
+    //                 } else {
+    //                     // Create new sections if 'id' is not set
+    //                     $this->contractSection->create([
+    //                         'contract_id' => $contract->id,
+    //                         'title' => $section['title'],
+    //                         'customer_id' => $data['customer_id'],
+    //                         'customer_site_id' => $data['customer_site_id'],
+    //                         'created_by_user_id' => $data['created_by_user_id'],
+    //                         'status' => $section['status'] ?? true,
+    //                     ]);
+    //                 }
+    //             }
+    //         }
+
+    //         DB::commit();
+    //         return $contract;
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         throw new \Exception('Failed to update contract: ' . $e->getMessage());
+    //     }
+    // }
+
+    public function update(int $id, array $data)
+    {
+        DB::beginTransaction();
+        try {
+            // Retrieve the contract
+            $contract = $this->contractService->getById($id);
+            if (!$contract) {
+                throw new \Exception("Contract not found");
+            }
+
+            // Handle contract type if provided
+            if (isset($data['contract_type_id'])) {
+                $contractType = $this->contractTypeService->getById($data['contract_type_id']);
+                if (!$contractType) {
+                    throw new \Exception("Contract type not found");
+                }
+                $data['contract_type_id'] = $contractType->id;
+            }
+
+            // Update the contract
+            $contract = $this->contractService->update($id, $data);
+
+            // Update contract details old (for before_erp contracts)
+            if ($contract->before_erp === true && isset($data['file_path'])) {
+                if (!isset($data['file_path_id'])) {
+                    throw new \Exception('File path ID is required for updating old contract details.');
+                }
+                $detailOld = $this->contractDetailsOldService->getById($data['file_path_id']);
+                if ($detailOld) {
+                    $this->contractDetailsOldService->update($detailOld, [
+                        'contract_id' => $contract->id,
+                        'file_path' => $data['file_path'],
+                        'customer_id' => $data['customer_id'],
+                        'customer_site_id' => $data['customer_site_id'],
+                        'created_by_user_id' => $data['created_by_user_id'],
+                        'status' => $data['status'] ?? true,
+                    ]);
+                }
+            }
+
+            // Update or create contract sections (for non-before_erp contracts)
+            if ($contract->before_erp === false && isset($data['sections'])) {
+                foreach ($data['sections'] as $section) {
+                    if (isset($section['id'])) {
+                        $existingSection = $this->contractSection->getById($section['id']);
+                        if ($existingSection) {
+                            $this->contractSection->update($existingSection->id, [
+                                'contract_id' => $contract->id,
+                                'title' => $section['title'],
+                                'customer_id' => $data['customer_id'],
+                                'customer_site_id' => $data['customer_site_id'],
+                                'created_by_user_id' => $data['created_by_user_id'],
+                                'status' => $section['status'] ?? true,
+                            ]);
+                        }
+                    } else {
+                        // Create new section if 'id' is not set
+                        $this->contractSection->create([
+                            'contract_id' => $contract->id,
+                            'title' => $section['title'],
+                            'customer_id' => $data['customer_id'],
+                            'customer_site_id' => $data['customer_site_id'],
+                            'created_by_user_id' => $data['created_by_user_id'],
+                            'status' => $section['status'] ?? true,
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+            return $contract;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to update contract: ' . $e->getMessage());
         }
     }
 }

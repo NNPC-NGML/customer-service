@@ -51,7 +51,7 @@ class CustomerContractTemplateController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Get( 'created_by_user_id' => $this->user->id,
      *     path="/api/contract-templates/{id}",
      *     summary="Get a specific contract template",
      *     tags={"Contract Templates"},

@@ -111,8 +111,10 @@ class CustomerContractController extends Controller
     public function update(UpdateContractRequest $request, CustomerContract $contract): JsonResponse
     {
 
-        $contract->update($request->toArray());
-        return response()->json($contract);
+        // $contract->update($request->toArray());
+        // return response()->json($contract);
+        $data = $this->service->update($contract->id, $request->toArray());
+        return response()->json($data);
     }
 
 
