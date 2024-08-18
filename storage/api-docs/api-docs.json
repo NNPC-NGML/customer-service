@@ -1,0 +1,639 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Customer Service ",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/contract-addendums": {
+            "get": {
+                "tags": [
+                    "Contract Addendums"
+                ],
+                "summary": "Get all contract addendums",
+                "operationId": "2166a7c19eca8a7b02d1852af505be4a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contract Addendums"
+                ],
+                "summary": "Create a new contract addendum",
+                "operationId": "63530414a81132a129f54a7332f31011",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAddendumRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/contract-addendums/{id}": {
+            "get": {
+                "tags": [
+                    "Contract Addendums"
+                ],
+                "summary": "Get a specific contract addendum",
+                "operationId": "06933fe69f656dfca0aab56e418f0e2d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Addendum not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contract Addendums"
+                ],
+                "summary": "Update a specific contract addendum",
+                "operationId": "317e085c00ea1c242a4f40f6fccad6d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAddendumRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Addendum not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contract Addendums"
+                ],
+                "summary": "Delete a specific contract addendum",
+                "operationId": "80aba8093c41782efb25c2ba3a42d32c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Addendum not found"
+                    }
+                }
+            }
+        },
+        "/api/contracts": {
+            "get": {
+                "tags": [
+                    "Contracts"
+                ],
+                "summary": "Get all contracts",
+                "operationId": "52955768ef5bc910299a93f06d3cb53e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contracts"
+                ],
+                "summary": "Create a new contract",
+                "operationId": "295a3b920eb4585d52171d2767e0089f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreContractRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/contracts/{id}": {
+            "get": {
+                "tags": [
+                    "Contracts"
+                ],
+                "summary": "Get a specific contract",
+                "operationId": "d025038d6188b17d408cd21177e575bd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Contract not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contracts"
+                ],
+                "summary": "Update a specific contract",
+                "operationId": "17395916b7237b169327286c5244b315",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateContractRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Contract not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contracts"
+                ],
+                "summary": "Delete a specific contract",
+                "operationId": "9686252905dc8117e6096db4f69456fe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Contract not found"
+                    }
+                }
+            }
+        },
+        "/api/contracts/sign": {
+            "post": {
+                "tags": [
+                    "Contract Signatures"
+                ],
+                "summary": "Sign a contract",
+                "operationId": "705c6961a509ef1ef438b1ca06ebe09d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignContractRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/contracts/signatures/{id}": {
+            "get": {
+                "tags": [
+                    "Contract Signatures"
+                ],
+                "summary": "Get a specific contract signature",
+                "operationId": "b58815618bc119f4df5d6729fbf755c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Signature not found"
+                    }
+                }
+            }
+        },
+        "/api/contract-templates": {
+            "get": {
+                "tags": [
+                    "Contract Templates"
+                ],
+                "summary": "Get all contract templates",
+                "operationId": "f4636eae0e0e3594cd30b2662f6d6b4b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Contract Templates"
+                ],
+                "summary": "Create a new contract template",
+                "operationId": "e83e5ad2831bffd86369df50f2bb034f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreTemplateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/contract-templates/{id}": {
+            "get": {
+                "tags": [
+                    "Contract Templates"
+                ],
+                "summary": "Get a specific contract template",
+                "operationId": "e11e86ad85645460f5a904424e329b52",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contract Templates"
+                ],
+                "summary": "Update a specific contract template",
+                "operationId": "b9f18531b92cc1d9fb62a32b8b26f6ca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTemplateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contract Templates"
+                ],
+                "summary": "Delete a specific contract template",
+                "operationId": "3640bc897c9452e39cbf1857a3aff783",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "SignContractRequest": {
+                "title": "Sign Contract Request",
+                "description": "Sign Contract request body data",
+                "required": [
+                    "contract_id",
+                    "signature",
+                    "title",
+                    "signature_type"
+                ],
+                "type": "object"
+            },
+            "StoreAddendumRequest": {
+                "title": "Store Addendum Request",
+                "description": "Store Addendum request body data",
+                "required": [
+                    "customer_id",
+                    "customer_site_id",
+                    "parent_contract_id",
+                    "child_contract_id",
+                    "status"
+                ],
+                "properties": {
+                    "customer_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "customer_site_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "parent_contract_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "child_contract_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreContractRequest": {
+                "title": "Store Contract Request",
+                "description": "Store Contract request body data",
+                "required": [
+                    "customer_id",
+                    "customer_site_id",
+                    "contract_type_id",
+                    "before_erp",
+                    "status"
+                ],
+                "properties": {
+                    "customer_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "customer_site_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "contract_type_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "before_erp": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreTemplateRequest": {
+                "title": "Store Template Request",
+                "description": "Store Template request body data",
+                "required": [
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Standard Contract Template"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAddendumRequest": {
+                "title": "Update Addendum Request",
+                "description": "Update Addendum request body data",
+                "properties": {
+                    "customer_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "customer_site_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "parent_contract_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "child_contract_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateContractRequest": {
+                "title": "Update Contract Request",
+                "description": "Update Contract request body data",
+                "properties": {
+                    "customer_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "customer_site_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "contract_type_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "before_erp": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTemplateRequest": {
+                "title": "Update Template Request",
+                "description": "Update Template request body data",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Updated Contract Template"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Contract Addendums",
+            "description": "API Endpoints of Contract Addendums"
+        },
+        {
+            "name": "Contracts",
+            "description": "API Endpoints of Customer Contracts"
+        },
+        {
+            "name": "Contract Signatures",
+            "description": "API Endpoints of Contract Signatures"
+        },
+        {
+            "name": "Contract Templates",
+            "description": "API Endpoints of Contract Templates"
+        }
+    ]
+}
