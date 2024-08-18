@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class CustomerApprovalTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'approval_title' => $this->faker->words(3, true),
+            'decline_action' => $this->faker->url,
+            'created_by_user_id' => User::factory(),
+            'status' => $this->faker->boolean,
         ];
     }
 }
