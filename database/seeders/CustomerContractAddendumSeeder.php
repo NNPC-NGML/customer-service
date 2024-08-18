@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\CustomerContractAddendum;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CustomerContractAddendumSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class CustomerContractAddendumSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        CustomerContractAddendum::factory()->count(20)->create();
     }
 }
