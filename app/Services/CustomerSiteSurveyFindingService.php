@@ -32,4 +32,34 @@ class CustomerSiteSurveyFindingService
         }
         return CustomerSiteSurveyFinding::create($data);
     }
+
+      /**
+     * Validate and update an existing survey finding.
+     *
+     * @param int $id
+     * @param array $data
+     * @return CustomerSiteSurveyFinding
+     * @throws ValidationException
+     */
+    public function updateSurveyFinding(int $id, array $data): CustomerSiteSurveyFinding
+    {
+        $rules = [
+            'customer_id' => 'sometimes|integer|exists:customers,id',
+            'customer_site_id' => 'sometimes|integer|exists:customer_sites,id',
+            'file_path' => 'sometimes|string|max:255',
+            'created_by_user_id' => 'sometimes|integer|exists:users,id',
+            'status' => 'boolean',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $surveyFinding = CustomerSiteSurveyFinding::findOrFail($id);
+        $surveyFinding->update($data);
+
+        return $surveyFinding;
+    }
 }

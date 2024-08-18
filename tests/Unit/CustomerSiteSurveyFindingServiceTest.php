@@ -26,10 +26,12 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
      */
     private $customer;
 
-     /**
+    /**
      * @var CustomerSite
      */
     private $customerSite;
+
+    private $surveyFinding;
 
     protected function setUp(): void
     {
@@ -39,6 +41,7 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
         $this->user = User::factory()->create();
         $this->customer = User::factory()->create();
         $this->customerSite = CustomerSite::factory()->create();
+        $this->surveyFinding = CustomerSiteSurveyFinding::factory()->create();
     }
 
     /** @test */
@@ -74,5 +77,40 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
         $this->surveyFindingService->createSurveyFinding($invalidData);
 
         $this->assertDatabaseMissing('customer_site_survey_findings', $invalidData);
+    }
+
+
+    /** @test */
+    public function it_updates_a_survey_finding_successfully()
+    {
+        $updateData = [
+            'file_path' => 'updated/path/to/file.pdf',
+        ];
+
+        $updatedSurveyFinding = $this->surveyFindingService->updateSurveyFinding($this->surveyFinding->id, $updateData);
+
+        $this->assertInstanceOf(CustomerSiteSurveyFinding::class, $updatedSurveyFinding);
+        // Exclude the timestamps from the comparison
+        $expectedData = array_merge(
+            $this->surveyFinding->only(['id', 'customer_id', 'customer_site_id', 'created_by_user_id', 'status']),
+            $updateData
+        );
+
+        $this->assertDatabaseHas('customer_site_survey_findings', $expectedData);
+    }
+
+
+    /** @test */
+    public function it_fails_to_update_a_survey_finding_with_invalid_data()
+    {
+        $invalidUpdateData = [
+            'customer_id' => 'invalid', // Invalid customer_id
+        ];
+
+        $this->expectException(ValidationException::class);
+
+        $this->surveyFindingService->updateSurveyFinding($this->surveyFinding->id, $invalidUpdateData);
+
+        $this->assertDatabaseMissing('customer_site_survey_findings', $invalidUpdateData);
     }
 }
