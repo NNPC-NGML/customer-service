@@ -23,7 +23,6 @@ class CustomerSiteSurveyFindingControllerTest extends TestCase
      public function it_returns_a_single_survey_finding_by_id()
      {
 
-         // Use the named route for show, passing the ID
          $response = $this->getJson(route('survey-findings.show', ['id' => $this->surveyFinding->id]));
 
          $response->assertStatus(200)
