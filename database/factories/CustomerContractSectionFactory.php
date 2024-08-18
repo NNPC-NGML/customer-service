@@ -23,7 +23,7 @@ class CustomerContractSectionFactory extends Factory
             'customer_id' => User::factory()->create()->id,
             'customer_site_id' => User::factory()->create()->id,
             'contract_id' => CustomerContract::factory()->create()->id,
-            'title_id' => $this->faker->word,
+            'title' => $this->faker->word,
             'created_by_user_id' => User::factory()->create()->id,
             'status' => $this->faker->boolean,
         ];

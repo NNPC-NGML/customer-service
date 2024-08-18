@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CustomerContract;
 use Illuminate\Http\JsonResponse;
+use App\Services\Contract\ContractService;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
 
@@ -17,6 +18,13 @@ use App\Http\Requests\UpdateContractRequest;
 
 class CustomerContractController extends Controller
 {
+
+    protected $service;
+
+    public function __construct(ContractService $contractService)
+    {
+        $this->service = $contractService;
+    }
     /**
      * @OA\Get(
      *     path="/api/contracts",
@@ -48,7 +56,14 @@ class CustomerContractController extends Controller
     {
 
 
-        $contract = CustomerContract::create($request->validated() + ['created_by_user_id' => auth()->id()]);
+
+        // $data = $request->validated();
+        // $contract = CustomerContract::create($request->validated() + ['created_by_user_id' => auth()->id()]);
+        // return response()->json($contract, 201);
+
+
+        $data = $request->validated() + ['created_by_user_id' => auth()->id()];
+        $contract =  $this->service->create($data);
         return response()->json($contract, 201);
     }
 

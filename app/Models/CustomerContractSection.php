@@ -12,7 +12,7 @@ class CustomerContractSection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'customer_site_id', 'contract_id', 'title_id', 'created_by_user_id', 'status'];
+    protected $fillable = ['customer_id', 'customer_site_id', 'contract_id', 'title', 'created_by_user_id', 'status'];
 
     public function contract()
     {
