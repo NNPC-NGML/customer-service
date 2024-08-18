@@ -14,12 +14,15 @@ class ContractService
     private $contractService;
     private $contractSection;
 
+
+
     public function __construct(
         CustomerContractService $contractService,
         CustomerContractTypeService $contractTypeService,
         CustomerContractDetailsNewService $contractDetailsNewService,
         CustomerContractDetailsOldService $contractDetailsOldService,
-        CustomerContractSectionService $contractSection
+        CustomerContractSectionService $contractSection,
+
     ) {
         $this->contractService = $contractService;
         $this->contractTypeService = $contractTypeService;

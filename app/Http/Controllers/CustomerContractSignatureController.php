@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\CustomerContractSignature;
 use App\Http\Requests\SignContractRequest;
+use App\Services\Contract\ContractSignatureService;
 
 /**
  * @OA\Tag(
@@ -15,6 +16,13 @@ use App\Http\Requests\SignContractRequest;
  */
 class CustomerContractSignatureController extends Controller
 {
+    protected $service;
+
+    public function __construct(ContractSignatureService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * @OA\Post(
      *     path="/api/contracts/sign",
@@ -30,12 +38,13 @@ class CustomerContractSignatureController extends Controller
      */
     public function sign(SignContractRequest $request): JsonResponse
     {
-        $signature = CustomerContractSignature::create($request->validated() + [
-            'created_by_user_id' => auth()->id(),
-            'status' => true,
-        ]);
+        $signature = $this->service->createSignature($request->validated());
 
-        return response()->json($signature, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Contract signed successfully.',
+            'data' => $signature,
+        ], 201);
     }
 
     /**
@@ -55,6 +64,12 @@ class CustomerContractSignatureController extends Controller
      */
     public function show(CustomerContractSignature $signature): JsonResponse
     {
-        return response()->json($signature);
+        $signature = $this->service->getSignatureById($signature->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contract signature retrieved successfully.',
+            'data' => $signature,
+        ]);
     }
 }

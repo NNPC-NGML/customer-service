@@ -52,6 +52,10 @@ class CustomerContractSignatureControllerTest extends TestCase
         $response = $this->getJson("/api/contracts/signatures/{$signature->id}");
 
         $response->assertStatus(200)
-            ->assertJson($signature->toArray());
+            ->assertJson([
+                'success' => true,
+                'message' => 'Contract signature retrieved successfully.',
+                'data' => $signature->toArray(),
+            ]);
     }
 }
