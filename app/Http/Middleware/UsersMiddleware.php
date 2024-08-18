@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Skillz\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class UsersMiddleware
@@ -23,8 +24,7 @@ class UsersMiddleware
         if (!$response->ok()) {
             abort(401, 'unauthorized');
         }
-
+        Auth::setUser(new \App\Models\User($response->json()));
         return $next($request);
     }
 }
-
