@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerSiteSurveyFindingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
@@ -21,6 +22,8 @@ Route::middleware('scope.user')->group(function () {
         return response()->json(['message' => 'Access granted']);
     });
 });
+
+Route::get('/survey-findings/{id}', [CustomerSiteSurveyFindingController::class, 'show'])->name('survey-findings.show');
 
 
 
