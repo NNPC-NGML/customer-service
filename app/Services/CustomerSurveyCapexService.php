@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\CustomerSurveyCapex;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CustomerSurveyCapexService
 {
@@ -47,7 +48,7 @@ class CustomerSurveyCapexService
         }
     }
 
-       /**
+    /**
      * Update an existing Customer Survey Capex.
      *
      * @param int $id
@@ -78,5 +79,18 @@ class CustomerSurveyCapexService
         $capex->update($data);
 
         return $capex;
+    }
+
+    /**
+     * Delete a Customer Survey Capex by its ID.
+     *
+     * @param int $id
+     * @return bool
+     * @throws ModelNotFoundException
+     */
+    public function deleteCapex(int $id): bool
+    {
+        $capex = CustomerSurveyCapex::findOrFail($id);
+        return $capex->delete();
     }
 }

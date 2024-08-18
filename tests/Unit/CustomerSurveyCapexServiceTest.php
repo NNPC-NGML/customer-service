@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\CustomerSurveyCapexService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
 
 class CustomerSurveyCapexServiceTest extends TestCase
@@ -110,5 +111,24 @@ class CustomerSurveyCapexServiceTest extends TestCase
         $this->capexService->updateCapex($this->capex->id, $invalidUpdateData);
 
         $this->assertDatabaseMissing('customer_survey_capexes', $invalidUpdateData);
+    }
+
+    /** @test */
+    public function it_deletes_a_customer_survey_capex_successfully()
+    {
+        $deleted = $this->capexService->deleteCapex($this->capex->id);
+
+        $this->assertTrue($deleted);
+        $this->assertDatabaseMissing('customer_survey_capexes', ['id' => $this->capex->id]);
+    }
+
+    /** @test */
+    public function it_throws_model_not_found_exception_if_capex_does_not_exist()
+    {
+        $nonExistentId = mt_rand(1000000000, 9999999999);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->capexService->deleteCapex($nonExistentId);
     }
 }
