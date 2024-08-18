@@ -228,17 +228,35 @@ class DDQService
         return CustomerDdqSubGroup::findOrFail($id);
     }
 
+
+    /**
+     * Find a customer DDQ by its ID.
+     *
+     * @param int $id The ID of the customer DDQ.
+     * @return CustomerDdqSubGroup The found customer DDQ.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If no DDQ is found.
+     */
     public function getCustomerDdqById(int $id)
     {
         return CustomerDdq::findOrFail($id);
     }
 
+    /**
+     * Retrieve Customer DDQs based on specified parameters.
+     *
+     * @param int $customer_id The ID of the customer.
+     * @param int $site_id The ID of the customer site.
+     * @param int $group_id The ID of the group.
+     * @param int $subgroup_id The ID of the subgroup.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection A collection of `CustomerDdq` models that match the criteria.
+     */
     public function getCustomerDdqByParams($customer_id, $site_id, $group_id, $subgroup_id)
     {
         return CustomerDdq::where('customer_id', $customer_id)
-        ->where('customer_site_id', $site_id)
-        ->where('group_id', $group_id)
-        ->where('subgroup_id', $subgroup_id)
-        ->get();
+            ->where('customer_site_id', $site_id)
+            ->where('group_id', $group_id)
+            ->where('subgroup_id', $subgroup_id)
+            ->get();
     }
 }

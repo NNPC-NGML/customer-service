@@ -24,11 +24,11 @@ Route::middleware('scope.user')->group(function () {
         return response()->json(['message' => 'Access granted']);
     });
     Route::apiResource('ddq-groups', CustomerDdqGroupController::class);
-    Route::apiResource('ddq-subgroups', CustomerDdqSubGroupController::class);
-    Route::post('ddqs/approve/{id}', [CustomerDdqController::class, 'approve']);
-    Route::post('ddqs/decline/{id}', [CustomerDdqController::class, 'decline']);
-    // Route::get('ddqs/view/{customer_id}/{site_id}/{group_id}/{subgroup_id}', [CustomerDdqController::class, 'showDDQ']);
-    Route::get('ddqs/view/{id}', [CustomerDdqController::class, 'viewDDQ']);
+    // Route::apiResource('ddq-subgroups', CustomerDdqSubGroupController::class);
+    // Route::post('ddqs/approve/{id}', [CustomerDdqController::class, 'approve']);
+    // Route::post('ddqs/decline/{id}', [CustomerDdqController::class, 'decline']);
+    // // Route::get('ddqs/view/{customer_id}/{site_id}/{group_id}/{subgroup_id}', [CustomerDdqController::class, 'showDDQ']);
+    // Route::get('ddqs/view/{id}', [CustomerDdqController::class, 'viewDDQ']);
 });
 
 
