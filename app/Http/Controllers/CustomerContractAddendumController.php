@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Models\CustomerContractAddendum;
 use App\Http\Requests\StoreAddendumRequest;
 use App\Http\Requests\UpdateAddendumRequest;
+use App\Services\Contract\CustomerContractAddendumService;
 
 /**
  * @OA\Tag(
@@ -16,7 +17,14 @@ use App\Http\Requests\UpdateAddendumRequest;
  */
 
 class CustomerContractAddendumController extends Controller
+
 {
+    protected $service;
+
+    public function __construct(CustomerContractAddendumService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * @OA\Get(
      *     path="/api/contract-addendums",
@@ -27,8 +35,8 @@ class CustomerContractAddendumController extends Controller
      */
     public function index(): JsonResponse
     {
-        $addendums = CustomerContractAddendum::with(['parentContract', 'childContract'])->get();
-        return response()->json($addendums);
+        $addendums = $this->service->getAllAddendums();
+        return response()->json(['success' => true, 'data' => $addendums]);
     }
 
     /**
@@ -44,10 +52,11 @@ class CustomerContractAddendumController extends Controller
      *     @OA\Response(response=422, description="Validation error")
      * )
      */
+
     public function store(StoreAddendumRequest $request): JsonResponse
     {
-        $addendum = CustomerContractAddendum::create($request->validated() + ['created_by_user_id' => auth()->id()]);
-        return response()->json($addendum, 201);
+        $addendum = $this->service->attachAddendum($request->validated() + ['created_by_user_id' => auth()->id()]);
+        return response()->json(['success' => true, 'message' => 'Addendum created successfully.', 'data' => $addendum], 201);
     }
 
     /**

@@ -30,7 +30,7 @@ class CustomerContractAddendumControllerTest extends TestCase
         $response = $this->getJson('/api/contract-addendums');
 
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(3, 'data');
     }
 
     public function test_store_creates_new_addendum()
