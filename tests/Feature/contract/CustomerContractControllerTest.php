@@ -30,7 +30,7 @@ class CustomerContractControllerTest extends TestCase
         $response = $this->getJson('/api/contracts');
 
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(3, 'data');
     }
 
     public function test_store_creates_new_contract()
@@ -61,7 +61,10 @@ class CustomerContractControllerTest extends TestCase
         $response = $this->getJson("/api/contracts/{$contract->id}");
 
         $response->assertStatus(200)
-            ->assertJson($contract->toArray());
+            ->assertJson([
+                'success' => true,
+                'data' => $contract->toArray(),
+            ]);
     }
 
     public function test_update_modifies_contract()
@@ -78,7 +81,10 @@ class CustomerContractControllerTest extends TestCase
         $response = $this->putJson("/api/contracts/{$contract->id}", $updateData);
 
         $response->assertStatus(200)
-            ->assertJsonFragment($updateData);
+            ->assertJson([
+                'success' => true,
+                'data' => $updateData,
+            ]);
     }
 
     public function test_destroy_deletes_contract()
