@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\CustomerSite;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class CustomerSiteSurveyFindingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customer_id' => User::factory(),
+            'customer_site_id' => CustomerSite::factory()->create(),
+            'file_path' => $this->faker->filePath(),
+            'created_by_user_id' => User::factory(),
+            'status' => $this->faker->boolean(),
         ];
     }
 }
