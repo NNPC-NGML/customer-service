@@ -25,7 +25,7 @@ class CustomerContractSection extends Model
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
-    public function detailsNews()
+    public function detailsNew()
     {
         return $this->hasMany(CustomerContractDetailsNew::class, 'section_id');
     }

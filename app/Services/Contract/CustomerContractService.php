@@ -36,7 +36,7 @@ class CustomerContractService
 
     public function getById(int $id): ?CustomerContract
     {
-        return CustomerContract::find($id);
+        return CustomerContract::findOrFail($id)->load(['contractType', 'sections', 'detailsNews', 'detailsOlds', 'parentAddendums', 'childAddendums', 'signatures']);
     }
 
     public function getAll()

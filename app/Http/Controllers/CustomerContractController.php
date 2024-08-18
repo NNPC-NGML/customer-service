@@ -84,7 +84,8 @@ class CustomerContractController extends Controller
      */
     public function show(CustomerContract $contract): JsonResponse
     {
-        return response()->json($contract->load(['contractType']));
+        $contract =  $this->service->view($contract->id);
+        return response()->json($contract);
     }
 
     /**
