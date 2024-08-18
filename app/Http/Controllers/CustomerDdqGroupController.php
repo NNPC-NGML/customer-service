@@ -141,7 +141,7 @@ class CustomerDdqGroupController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            $group = $this->ddqService->getCustomerDdqGroupById($id);
             return response()->json([
                 'status' => 'success',
                 'data' => new CustomerDdqGroupResource($group)
@@ -189,7 +189,7 @@ class CustomerDdqGroupController extends Controller
     {
         try {
             $data = $this->ddqService->validateDDQGroup($request->all());
-            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            $group = $this->ddqService->getCustomerDdqGroupById($id);
             $group->update($data);
             return response()->json([
                 'status' => 'success',
@@ -228,7 +228,7 @@ class CustomerDdqGroupController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            $group = $this->ddqService->findACustomerDdqGroupById($id);
+            $group = $this->ddqService->getCustomerDdqGroupById($id);
             $group->delete();
             return response()->json([
                 'status' => 'success'

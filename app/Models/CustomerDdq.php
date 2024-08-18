@@ -17,5 +17,6 @@ class CustomerDdq extends Model
         'subgroup_id',
         'document_type',
         'created_by_user_id',
+        'status',
     ];
 }

@@ -22,15 +22,24 @@ class CustomerDdqGroupControllerTest extends TestCase
      *
      * @return void
      */
-    public function it_can_create_a_ddq_group()
+    public function test_it_can_create_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
+
         $response = $this->postJson('/api/ddq-groups', [
             'title' => 'Compliance Group',
             'status' => true,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(201)
+                 ->assertJson([
+                     'status' => 'success',
+                     'data' => [
+                         'title' => 'Compliance Group',
+                         'status' => true,
+                     ],
+                 ]);
+
         $this->assertDatabaseHas('customer_ddq_groups', [
             'title' => 'Compliance Group',
             'status' => true,
@@ -42,7 +51,7 @@ class CustomerDdqGroupControllerTest extends TestCase
      *
      * @return void
      */
-    public function it_can_list_all_ddq_groups()
+    public function test_it_can_list_all_ddq_groups()
     {
         $this->actingAsAuthenticatedTestUser();
         CustomerDdqGroup::factory()->count(3)->create();
@@ -50,7 +59,10 @@ class CustomerDdqGroupControllerTest extends TestCase
         $response = $this->getJson('/api/ddq-groups');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+                 ->assertJson([
+                     'status' => 'success',
+                 ])
+                 ->assertJsonCount(3, 'data');
     }
 
     /**
@@ -58,7 +70,7 @@ class CustomerDdqGroupControllerTest extends TestCase
      *
      * @return void
      */
-    public function it_can_view_a_single_ddq_group()
+    public function test_it_can_view_a_single_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
         $group = CustomerDdqGroup::factory()->create();
@@ -67,8 +79,11 @@ class CustomerDdqGroupControllerTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertJson([
-                     'id' => $group->id,
-                     'title' => $group->title,
+                     'status' => 'success',
+                     'data' => [
+                         'id' => $group->id,
+                         'title' => $group->title,
+                     ],
                  ]);
     }
 
@@ -77,7 +92,7 @@ class CustomerDdqGroupControllerTest extends TestCase
      *
      * @return void
      */
-    public function it_can_update_a_ddq_group()
+    public function test_it_can_update_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
         $group = CustomerDdqGroup::factory()->create([
@@ -89,7 +104,16 @@ class CustomerDdqGroupControllerTest extends TestCase
             'status' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'status' => 'success',
+                     'data' => [
+                         'id' => $group->id,
+                         'title' => 'New Title',
+                         'status' => false,
+                     ],
+                 ]);
+
         $this->assertDatabaseHas('customer_ddq_groups', [
             'id' => $group->id,
             'title' => 'New Title',
@@ -102,7 +126,7 @@ class CustomerDdqGroupControllerTest extends TestCase
      *
      * @return void
      */
-    public function it_can_delete_a_ddq_group()
+    public function test_it_can_delete_a_ddq_group()
     {
         $this->actingAsAuthenticatedTestUser();
         $group = CustomerDdqGroup::factory()->create();
@@ -110,6 +134,7 @@ class CustomerDdqGroupControllerTest extends TestCase
         $response = $this->deleteJson("/api/ddq-groups/{$group->id}");
 
         $response->assertStatus(204);
+
         $this->assertDatabaseMissing('customer_ddq_groups', [
             'id' => $group->id,
         ]);

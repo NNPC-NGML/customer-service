@@ -2,80 +2,273 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerDdq;
+use App\Http\Resources\CustomerDdqResource;
+use App\Services\DDQService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class CustomerDdqController
- *
- * Handles the operations related to Customer Due Diligence Questionnaires (DDQ).
- * Provides methods for viewing, deleting, approving, and declining DDQs.
- *
- * @package App\Http\Controllers
+ * @OA\Schema(
+ *     schema="CustomerDdq",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="data", type="string", example="Sample data"),
+ *     @OA\Property(property="customer_id", type="integer", example=101),
+ *     @OA\Property(property="customer_site_id", type="integer", example=202),
+ *     @OA\Property(property="group_id", type="integer", example=303),
+ *     @OA\Property(property="subgroup_id", type="integer", example=404),
+ *     @OA\Property(
+ *         property="document_type",
+ *         type="string",
+ *         enum={"string", "file"},
+ *         example="string"
+ *     ),
+ *     @OA\Property(property="created_by_user_id", type="integer", example=505),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
  */
 class CustomerDdqController extends Controller
 {
-    // /**
-    //  * Show a list of DDQs based on customer, site, group, and subgroup IDs.
-    //  *
-    //  * @param int $customer_id The ID of the customer.
-    //  * @param int $site_id The ID of the customer site.
-    //  * @param int $group_id The ID of the DDQ group.
-    //  * @param int $subgroup_id The ID of the DDQ subgroup.
-    //  * @return \Illuminate\Http\JsonResponse The JSON response containing the list of DDQs.
-    //  */
-    // public function showDDQ($customer_id, $site_id, $group_id, $subgroup_id)
-    // {
-    //     $ddq = CustomerDdq::where('customer_id', $customer_id)
-    //         ->where('customer_site_id', $site_id)
-    //         ->where('group_id', $group_id)
-    //         ->where('subgroup_id', $subgroup_id)
-    //         ->get();
+    /**
+     * @var DDQService
+     */
+    protected DDQService $ddqService;
 
-    //     return response()->json($ddq);
-    // }
+    /**
+     * CustomerDdqController constructor.
+     *
+     * @param DDQService $ddqService
+     */
+    public function __construct(DDQService $ddqService)
+    {
+        $this->ddqService = $ddqService;
+    }
 
     // /**
-    //  * Delete a specific DDQ by ID.
-    //  *
-    //  * @param int $id The ID of the DDQ to delete.
-    //  * @return \Illuminate\Http\JsonResponse The JSON response with HTTP status code 204 (No Content).
-    //  * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the DDQ with the given ID is not found.
+    //  * @OA\Get(
+    //  *     path="/api/ddqs/{customer_id}/{site_id}/{group_id}/{subgroup_id}",
+    //  *     tags={"Customer DDQs"},
+    //  *     summary="Get list of DDQs",
+    //  *     @OA\Parameter(
+    //  *         name="customer_id",
+    //  *         in="path",
+    //  *         required=true,
+    //  *         @OA\Schema(type="integer")
+    //  *     ),
+    //  *     @OA\Parameter(
+    //  *         name="site_id",
+    //  *         in="path",
+    //  *         required=true,
+    //  *         @OA\Schema(type="integer")
+    //  *     ),
+    //  *     @OA\Parameter(
+    //  *         name="group_id",
+    //  *         in="path",
+    //  *         required=true,
+    //  *         @OA\Schema(type="integer")
+    //  *     ),
+    //  *     @OA\Parameter(
+    //  *         name="subgroup_id",
+    //  *         in="path",
+    //  *         required=true,
+    //  *         @OA\Schema(type="integer")
+    //  *     ),
+    //  *     @OA\Response(
+    //  *         response=200,
+    //  *         description="Successful operation",
+    //  *         @OA\JsonContent(
+    //  *             @OA\Property(property="status", type="string", example="success"),
+    //  *             @OA\Property(
+    //  *                 property="data",
+    //  *                 type="array",
+    //  *                 @OA\Items(ref="#/components/schemas/CustomerDdq")
+    //  *             )
+    //  *         )
+    //  *     ),
+    //  *     @OA\Response(response=401, description="Unauthorized"),
+    //  *     @OA\Response(response=403, description="Forbidden"),
+    //  *     @OA\Response(response=404, description="Not Found")
+    //  * )
     //  */
-    // public function destroy($id)
+    // public function showDDQ($customer_id, $site_id, $group_id, $subgroup_id): JsonResponse
     // {
-    //     $ddq = CustomerDdq::findOrFail($id);
-    //     $ddq->delete();
-    //     return response()->json(null, 204);
+    //     try {
+    //         $ddq = $this->ddqService->getCustomerDdqByParams($customer_id, $site_id, $group_id, $subgroup_id);
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'data' => CustomerDdqResource::collection($ddq)
+    //         ]);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => $th->getMessage(),
+    //         ], $th->getCode() ?: 500);
+    //     }
     // }
 
-    // /**
-    //  * Approve a specific DDQ by ID.
-    //  *
-    //  * @param int $id The ID of the DDQ to approve.
-    //  * @return \Illuminate\Http\JsonResponse The JSON response containing the updated DDQ with status 'approved'.
-    //  * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the DDQ with the given ID is not found.
-    //  */
-    // public function approve($id)
-    // {
-    //     $ddq = CustomerDdq::findOrFail($id);
-    //     $ddq->status = 'approved';
-    //     $ddq->save();
-    //     return response()->json($ddq);
-    // }
 
-    // /**
-    //  * Decline a specific DDQ by ID.
-    //  *
-    //  * @param int $id The ID of the DDQ to decline.
-    //  * @return \Illuminate\Http\JsonResponse The JSON response containing the updated DDQ with status 'declined'.
-    //  * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the DDQ with the given ID is not found.
-    //  */
-    // public function decline($id)
-    // {
-    //     $ddq = CustomerDdq::findOrFail($id);
-    //     $ddq->status = 'declined';
-    //     $ddq->save();
-    //     return response()->json($ddq);
-    // }
+    /**
+     * @OA\GET(
+     *     path="/api/ddqs/view/{id}",
+     *     tags={"Customer DDQs"},
+     *     summary="Get a specific DDQ by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="DDQ found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=403, description="Forbidden"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function viewDDQ(int $id): JsonResponse
+    {
+        try {
+            $ddq = $this->ddqService->getCustomerDdqById($id);
+            return response()->json([
+                'status' => 'success',
+                'data' => new CustomerDdqResource($ddq)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 500);
+        }
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/ddqs/{id}",
+     *     tags={"Customer DDQs"},
+     *     summary="Delete a specific DDQ by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="DDQ deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=403, description="Forbidden"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+            $ddq = $this->ddqService->getCustomerDdqById($id);
+            $ddq->delete();
+            return response()->json([
+                'status' => 'success'
+            ], 204);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 404);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/ddqs/approve/{id}",
+     *     tags={"Customer DDQs"},
+     *     summary="Approve a specific DDQ by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="DDQ approved",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=403, description="Forbidden"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function approve(int $id): JsonResponse
+    {
+        try {
+            $ddq = $this->ddqService->getCustomerDdqById($id);
+            // $subgroup = $this->ddqService->getCustomerDdqSubGroupById($ddq->subgroup_id);
+            // $subgroup->status = true;
+            $ddq->status = 'approved';
+            $ddq->save();
+            // $subgroup->save();
+            return response()->json([
+                'status' => 'success'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 404);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/ddqs/decline/{id}",
+     *     tags={"Customer DDQs"},
+     *     summary="Decline a specific DDQ by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="DDQ declined",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=403, description="Forbidden"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function decline(int $id): JsonResponse
+    {
+        try {
+            $ddq = $this->ddqService->getCustomerDdqById($id);
+            // $subgroup = $this->ddqService->getCustomerDdqSubGroupById($ddq->subgroup_id);
+            // $subgroup->status = false;
+            $ddq->status = 'declined';
+            $ddq->save();
+            // $subgroup->save();
+            return response()->json([
+                'status' => 'success'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], $th->getCode() ?: 404);
+        }
+    }
 }
