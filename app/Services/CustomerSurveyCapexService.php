@@ -46,4 +46,37 @@ class CustomerSurveyCapexService
             throw new ValidationException($validator);
         }
     }
+
+       /**
+     * Update an existing Customer Survey Capex.
+     *
+     * @param int $id
+     * @param array $data
+     * @return CustomerSurveyCapex
+     * @throws ValidationException
+     */
+    public function updateCapex(int $id, array $data): CustomerSurveyCapex
+    {
+        $rules = [
+            'customer_id' => 'sometimes|integer|exists:users,id',
+            'customer_site_id' => 'sometimes|integer|exists:customer_sites,id',
+            'customer_proposed_daily_consumption' => 'sometimes|string|max:255',
+            'project_cost_in_naira' => 'sometimes|string|max:255',
+            'gas_rate_per_scuf_in_naira' => 'sometimes|string|max:255',
+            'dollar_rate' => 'sometimes|string|max:255',
+            'capex_file_path' => 'sometimes|string|max:255',
+            'created_by_user_id' => 'sometimes|integer|exists:users,id',
+            'status' => 'sometimes|boolean',
+        ];
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $capex = CustomerSurveyCapex::findOrFail($id);
+        $capex->update($data);
+
+        return $capex;
+    }
 }

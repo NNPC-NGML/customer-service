@@ -17,6 +17,7 @@ class CustomerSurveyCapexServiceTest extends TestCase
     protected $capexService;
     protected $user;
     protected $customerSite;
+    protected $capex;
 
     protected function setUp(): void
     {
@@ -27,6 +28,10 @@ class CustomerSurveyCapexServiceTest extends TestCase
         $this->user = User::factory()->create();
         $this->customerSite = CustomerSite::factory()->create([
             'customer_id' => $this->user->id,
+        ]);
+        $this->capex = CustomerSurveyCapex::factory()->create([
+            'customer_id' => $this->user->id,
+            'customer_site_id' => $this->customerSite->id,
         ]);
     }
 
@@ -71,5 +76,39 @@ class CustomerSurveyCapexServiceTest extends TestCase
         $this->capexService->createCapex($invalidData);
 
         $this->assertDatabaseMissing('customer_survey_capexes', $invalidData);
+    }
+
+
+    /** @test */
+    public function it_updates_an_existing_customer_survey_capex()
+    {
+
+        $projectCost = '20000000';
+        $dollarRate = '550';
+
+        $updateData = [
+            'project_cost_in_naira' => $projectCost,
+            'dollar_rate' => $dollarRate,
+        ];
+
+        $updatedCapex = $this->capexService->updateCapex($this->capex->id, $updateData);
+
+        $this->assertInstanceOf(CustomerSurveyCapex::class, $updatedCapex);
+        $this->assertEquals($projectCost, $updatedCapex->project_cost_in_naira);
+        $this->assertEquals($dollarRate, $updatedCapex->dollar_rate);
+    }
+
+    /** @test */
+    public function it_fails_to_update_capex_with_invalid_data()
+    {
+        $invalidUpdateData = [
+            'customer_id' => 'invalid', // Invalid customer_id
+        ];
+
+        $this->expectException(ValidationException::class);
+
+        $this->capexService->updateCapex($this->capex->id, $invalidUpdateData);
+
+        $this->assertDatabaseMissing('customer_survey_capexes', $invalidUpdateData);
     }
 }
