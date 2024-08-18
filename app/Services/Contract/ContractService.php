@@ -168,4 +168,27 @@ class ContractService
     {
         return $this->contractService->getById($id);
     }
+
+    public function remove(int $id): bool
+    {
+        DB::beginTransaction();
+        try {
+            $contract = $this->contractService->getById($id);
+            if (!$contract) {
+                throw new \Exception("Contract not found");
+            }
+            $this->contractSection->deleteByContractId($contract->id);
+            if ($contract->before_erp === true) {
+                $this->contractDetailsOldService->deleteByContractId($contract->id);
+            } else {
+                $this->contractDetailsNewService->deleteByContractId($contract->id);
+            }
+            $this->contractService->delete($contract->id);
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Failed to delete contract: ' . $e->getMessage());
+        }
+    }
 }

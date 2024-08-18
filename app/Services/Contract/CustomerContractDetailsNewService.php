@@ -36,6 +36,11 @@ class CustomerContractDetailsNewService
         return CustomerContractDetailsNew::all();
     }
 
+    public function deleteByContractId(int $contractId): bool
+    {
+        return CustomerContractDetailsNew::where('contract_id', $contractId)->delete();
+    }
+
     private function validate(array $data, $id = null, $partial = false): array
     {
 

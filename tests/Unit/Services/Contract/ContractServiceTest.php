@@ -199,4 +199,33 @@ class ContractServiceTest extends TestCase
         $this->assertEquals('Details about the contract', $retrievedContract->detailsNews->first()->details);
         $this->assertEquals('path/to/file', $retrievedContract->detailsOlds->first()->file_path);
     }
+
+
+    public function testRemoveContract()
+    {
+        $user = User::factory()->create();
+        $contractType = CustomerContractType::create([
+            'title' => 'Existing Type',
+            'status' => true
+        ]);
+
+        $data = [
+            'contract_type_id' => $contractType->id,
+            'customer_id' => 1,
+            'customer_site_id' => 1,
+            'created_by_user_id' => $user->id,
+            'before_erp' => false,
+            'sections' => [
+                ['title' => 'SECTION1']
+            ]
+        ];
+
+        $result = $this->service->create($data);
+
+        $this->assertInstanceOf(CustomerContract::class, $result);
+        $this->assertEquals($contractType->id, $result->contract_type_id);
+
+        $deleted = $this->service->remove($result->id);
+        $this->assertTrue($deleted);
+    }
 }

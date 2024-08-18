@@ -34,6 +34,11 @@ class CustomerContractSectionService
         return $section->delete();
     }
 
+    public function deleteByContractId(int $contractId): bool
+    {
+        return CustomerContractSection::where('contract_id', $contractId)->delete();
+    }
+
     public function getById(int $id): ?CustomerContractSection
     {
         return CustomerContractSection::find($id);
