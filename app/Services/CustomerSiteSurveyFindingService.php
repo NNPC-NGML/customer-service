@@ -76,4 +76,15 @@ class CustomerSiteSurveyFindingService
         $surveyFinding = CustomerSiteSurveyFinding::findOrFail($id);
         return $surveyFinding->delete();
     }
+
+     /**
+     * Retrieve a single survey finding by its ID.
+     *
+     * @param int $id
+     * @return CustomerSiteSurveyFinding
+     */
+    public function getSurveyFindingById(int $id): CustomerSiteSurveyFinding
+    {
+        return CustomerSiteSurveyFinding::findOrFail($id);
+    }
 }

@@ -23,6 +23,8 @@ Route::middleware('scope.user')->group(function () {
     });
 });
 
+Route::get('/survey-findings/{id}', [CustomerSiteSurveyFindingController::class, 'show'])->name('survey-findings.show');
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

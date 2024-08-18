@@ -127,7 +127,7 @@ class CustomerSiteSurveyFindingServiceTest extends TestCase
         /** @test */
         public function it_throws_model_not_found_exception_if_survey_finding_does_not_exist()
         {
-            $nonExistentId = 999;
+            $nonExistentId = mt_rand(1000000000, 9999999999);
 
             $this->expectException(ModelNotFoundException::class);
 
