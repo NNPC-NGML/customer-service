@@ -22,7 +22,7 @@ class CustomerSiteSurveyFindingService
             'customer_site_id' => 'required|integer|exists:customer_sites,id',
             'file_path' => 'required|string|max:255',
             'created_by_user_id' => 'required|integer|exists:users,id',
-            'status' => 'required|boolean',
+            'status' => 'boolean',
         ];
 
         $validator = Validator::make($data, $rules);
