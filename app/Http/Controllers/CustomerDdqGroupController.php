@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\CustomerDdqGroup;
 use App\Services\DDQService;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Resources\CustomerDdqGroupResource;
 
 /**
  * @OA\Schema(
  *     schema="CustomerDdqGroup",
  *     type="object",
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="title", type="string", example="Group Title"),
- *     @OA\Property(property="status", type="boolean", example=true),
- *     @OA\Property(property="created_at", type="string", format="date-time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time")
+ *     title="Customer DDQ Group",
+ *     @OA\Property(property="id", type="integer", example=1, description="ID of the DDQ Group"),
+ *     @OA\Property(property="title", type="string", example="Group Title", description="Title of the DDQ Group"),
+ *     @OA\Property(property="status", type="boolean", example=true, description="Status of the DDQ Group"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation date of the DDQ Group"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Last update date of the DDQ Group")
  * )
  */
 class CustomerDdqGroupController extends Controller
@@ -40,7 +40,8 @@ class CustomerDdqGroupController extends Controller
      * @OA\Get(
      *     path="/api/ddq-groups",
      *     tags={"Customer DDQ Groups"},
-     *     summary="Get list of DDQ Groups",
+     *     summary="Get a list of DDQ Groups",
+     *     description="Fetches a list of all available DDQ groups.",
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
@@ -57,13 +58,12 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=403, description="Forbidden")
      * )
      */
-    public function index(): JsonResponse
+    public function index()
     {
         try {
             $groups = $this->ddqService->getAllCustomerDdqGroups();
-            return response()->json([
-                'status' => 'success',
-                'data' => CustomerDdqGroupResource::collection($groups)
+            return CustomerDdqGroupResource::collection($groups)->additional([
+                'status' => 'success'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -78,6 +78,7 @@ class CustomerDdqGroupController extends Controller
      *     path="/api/ddq-groups",
      *     tags={"Customer DDQ Groups"},
      *     summary="Create a new DDQ Group",
+     *     description="Creates a new DDQ group with the provided title and status.",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -88,7 +89,7 @@ class CustomerDdqGroupController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="DDQ Group created",
+     *         description="DDQ Group created successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(ref="#/components/schemas/CustomerDdqGroup")
@@ -98,15 +99,14 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         try {
             $data = $this->ddqService->validateDDQGroup($request->all());
             $group = $this->ddqService->createACustomerDdqGroup($data);
-            return response()->json([
-                'status' => 'success',
-                'data' => new CustomerDdqGroupResource($group)
-            ], 201);
+            return (new CustomerDdqGroupResource($group))->additional([
+                'status' => 'success'
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
@@ -120,10 +120,12 @@ class CustomerDdqGroupController extends Controller
      *     path="/api/ddq-groups/{id}",
      *     tags={"Customer DDQ Groups"},
      *     summary="Get a specific DDQ Group by ID",
+     *     description="Fetches a DDQ group by its unique ID.",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID of the DDQ Group",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
@@ -138,13 +140,12 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id)
     {
         try {
             $group = $this->ddqService->getCustomerDdqGroupById($id);
-            return response()->json([
-                'status' => 'success',
-                'data' => new CustomerDdqGroupResource($group)
+            return (new CustomerDdqGroupResource($group))->additional([
+                'status' => 'success'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -159,10 +160,12 @@ class CustomerDdqGroupController extends Controller
      *     path="/api/ddq-groups/{id}",
      *     tags={"Customer DDQ Groups"},
      *     summary="Update a specific DDQ Group",
+     *     description="Updates a DDQ group with the specified ID using the provided data.",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID of the DDQ Group",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -175,7 +178,7 @@ class CustomerDdqGroupController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="DDQ Group updated",
+     *         description="DDQ Group updated successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(ref="#/components/schemas/CustomerDdqGroup")
@@ -185,15 +188,14 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, int $id)
     {
         try {
             $data = $this->ddqService->validateDDQGroup($request->all());
             $group = $this->ddqService->getCustomerDdqGroupById($id);
             $group->update($data);
-            return response()->json([
-                'status' => 'success',
-                'data' => new CustomerDdqGroupResource($group)
+            return (new CustomerDdqGroupResource($group))->additional([
+                'status' => 'success'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -208,15 +210,17 @@ class CustomerDdqGroupController extends Controller
      *     path="/api/ddq-groups/{id}",
      *     tags={"Customer DDQ Groups"},
      *     summary="Delete a specific DDQ Group",
+     *     description="Deletes the DDQ group with the specified ID.",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID of the DDQ Group",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="DDQ Group deleted",
+     *         description="DDQ Group deleted successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success")
      *         )
@@ -225,7 +229,7 @@ class CustomerDdqGroupController extends Controller
      *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id)
     {
         try {
             $group = $this->ddqService->getCustomerDdqGroupById($id);
