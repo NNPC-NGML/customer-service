@@ -24,6 +24,8 @@ class UsersMiddleware
             abort(401, 'unauthorized');
         }
 
+        Auth::setUser(new \App\Models\User($response->json()));
+
         return $next($request);
     }
 }
