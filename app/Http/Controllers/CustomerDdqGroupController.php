@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerDdqGroup;
 use App\Services\DDQService;
 use Illuminate\Http\Request;
 use App\Http\Resources\CustomerDdqGroupResource;
