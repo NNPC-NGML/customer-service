@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,10 +15,20 @@ class CustomerFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+
+    protected $model = \App\Models\Customer::class;
+
+    public function definition()
     {
         return [
-            //
+            'company_name' => $this->faker->company,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone_number' => $this->faker->phoneNumber,
+            'password' => bcrypt('password'),
+            'created_by_user_id' => \App\Models\User::factory(),
+            'status' => true,
+            'created_at' => now(),
+           'updated_at' => now(),
         ];
     }
 }
