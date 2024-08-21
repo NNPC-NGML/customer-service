@@ -24,6 +24,11 @@ class TagSeeder extends Seeder
                 'tag_class' => 'App\Services\CustomerService',
                 'tag_class_method' => 'create',
             ],
+            [
+                'name' => 'Create New Customer Site',
+                'tag_class' => 'App\Services\CustomerSiteService',
+                'tag_class_method' => 'create',
+            ],
         ];
         foreach ($data as $key => $value) {
             $tags = Tag::create($value);
