@@ -30,7 +30,8 @@ class CustomerSiteService
 
         $customerSiteCreated = CustomerSite::create($structuredData);
 
-        $formBuilderNotifier['entity'] = 'CustomerSite';
+        $formBuilderNotifier['entity'] = 'Customer';
+        $formBuilderNotifier['entity_id'] = $customerSiteCreated->customer_id;
         $formBuilderNotifier['entity_site_id'] = $customerSiteCreated->id;
         $formBuilderNotifier['task_id'] = $customerSiteCreated->task_id;
 
