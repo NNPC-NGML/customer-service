@@ -15,52 +15,32 @@ class CustomerServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function it_can_create_a_new_customer()
+
+    public function test_it_can_create_a_new_customer()
     {
         $user = User::factory()->create();
-        $customerData = [
-            'id' => 4,
-            'company_name' => 'Acme Corp',
-            'email' => 'john@example.com',
-            'phone_number' => '555-1234',
-            'password' => 'mypassword123',
-            'created_by_user_id' => $user->id,
-            'status' => true,
-        ];
-
-        $customerService = new CustomerService();
-        $newCustomer = $customerService->create($customerData);
-
-        $this->assertInstanceOf(Customer::class, $newCustomer);
-        $this->assertEquals($customerData['company_name'], $newCustomer->company_name);
-        $this->assertEquals($customerData['email'], $newCustomer->email);
-        $this->assertEquals($customerData['phone_number'], $newCustomer->phone_number);
-        $this->assertTrue(Hash::check($customerData['password'], $newCustomer->password));
-        $this->assertEquals($customerData['created_by_user_id'], $newCustomer->created_by_user_id);
-        $this->assertEquals($customerData['status'], $newCustomer->status);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_a_validation_exception_for_invalid_data()
-    {
-        $customerData = [
-            'id' => '',
-            'company_name' => '',
-            'email' => 'invalid_email',
-            'phone_number' => '',
-            'password' => 'short',
-            'created_by_user_id' => 'invalid_id',
-            'status' => 'invalid_status',
+        $data = [
+            'form_field_answers' => json_encode([
+                ['key' => 'company_name', 'value' => 'Acme Corp'],
+                ['key' => 'email', 'value' => 'john@example.com'],
+                ['key' => 'phone_number', 'value' => '555-1234'],
+                ['key' => 'password', 'value' => 'mypassword123'],
+                ['key' => 'created_by_user_id', 'value' => $user->id],
+                ['key' => 'status', 'value' => true],
+            ]),
+            'id' => 123,
         ];
 
         $customerService = new CustomerService();
 
-        $this->expectException(ValidationException::class);
-        $customerService->create($customerData);
+        $customer = $customerService->create($data);
+
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertEquals('Acme Corp', $customer->company_name);
+        $this->assertEquals('john@example.com', $customer->email);
+        $this->assertEquals('555-1234', $customer->phone_number);
+        $this->assertEquals($user->id, $customer->created_by_user_id);
+        $this->assertEquals(true, $customer->status);
+        $this->assertEquals(123, $customer->task_id);
     }
 }

@@ -5,72 +5,57 @@ namespace App\Services;
 use App\Models\Customer;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
 use App\Jobs\Customer\CustomerCreated;
-use App\Jobs\Customer\CreateCustomerJob;
 use Illuminate\Support\Facades\Validator;
+use App\Jobs\Customer\FormBuilderNotification;
 use Illuminate\Validation\ValidationException;
 
 class CustomerService
 {
-    // /**
-    //  * Dispatch the CreateCustomerJob.
-    //  *
-    //  * @param array $data
-    //  * @return void
-    //  */
-    // public function createCustomer(array $data): void
-    // {
-    //     CreateCustomerJob::dispatch($data);
-    // }
-
-    // /**
-    //  * Create a new customer immediately.
-    //  *
-    //  * @param array $data
-    //  * @return Customer
-    //  */
-    // //  public function createCustomerSync(array $data): Customer
-    // //  {
-    // // Hash the password before saving
-    // //      $data['password'] = bcrypt($data['password']);
-    // //      return Customer::create($data);
-    // // }
 
 
 
-    public function create(array $data): Customer
+    public function create($data): Customer
     {
 
-        $structuredData['task_id'] = $data['id'];
-        $structuredData['company_name'] = $data['company_name'];
-        $structuredData['email'] = $data['email'];
-        $structuredData['phone_number'] = $data['phone_number'];
-        $structuredData['created_by_user_id'] = $data['created_by_user_id'];
-        $structuredData['status'] = $data['status'];
-        $structuredData['password'] = $data['password'];
-        try {
-            $validatedData = $this->validate($structuredData);
-            $validatedData['password'] = Hash::make($validatedData['password']);
-            $validatedData['task_id'] = $data['id'];
-            $customerCreated = Customer::create($validatedData);
-            $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
-            if (is_array($customerQueue) && !empty($customerQueue)) {
-                foreach ($customerQueue as $queue) {
-                    $queue = trim($queue);
-                    if (!empty($queue)) {
-                        Log::info("Dispatching Customer event to queue: " . $queue);
-                        CustomerCreated::dispatch($customerCreated)->onQueue($queue);
-                    }
-                }
-            } else {
-                CustomerCreated::dispatch($customerCreated)->onQueue("automator_queue");
-            }
 
-            return $customerCreated;
-        } catch (ValidationException $e) {
-            throw $e;
+        $arrayData = json_decode($data['form_field_answers'], true);
+
+        $structuredData = [];
+
+        foreach ($arrayData as $item) {
+            $structuredData[$item['key']]  = $item['value'];
         }
+
+        $structuredData['task_id'] = $data['id'];
+
+
+        $customerCreated = Customer::create($structuredData);
+
+        $formBuilderNotifier['entity'] = 'Customer';
+        $formBuilderNotifier['entity_id'] = $customerCreated->id;
+        $formBuilderNotifier['task_id'] = $customerCreated->task_id;
+
+
+
+
+
+        $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
+        if (is_array($customerQueue) && !empty($customerQueue)) {
+            foreach ($customerQueue as $queue) {
+                $queue = trim($queue);
+                if (!empty($queue)) {
+                    Log::info("Dispatching Customer event to queue: " . $queue);
+                    CustomerCreated::dispatch($customerCreated)->onQueue($queue);
+                }
+            }
+        } else {
+            CustomerCreated::dispatch($customerCreated)->onQueue('formbuilder_queue');
+        }
+
+        FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
+
+        return $customerCreated;
     }
 
 

@@ -2,7 +2,6 @@
 
 namespace App\Jobs\FormBuilder;
 
-use MainService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -32,12 +31,8 @@ class FormBuilderUpdated implements ShouldQueue
      */
     public function handle(): void
     {
-        // $service = new FormService();
-        // $data = $this->data;
-        // $service->updateForm($data, $this->id);
-
-        $service = new MainService();
+        $service = new FormService();
         $data = $this->data;
-        $service->create($data);
+        $service->updateForm($data, $this->id);
     }
 }

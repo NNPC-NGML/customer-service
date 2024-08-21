@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('task_id')->nullable()->change();
+            $table->unsignedBigInteger('task_id')->nullable();
             $table->string("company_name")->comment();
             $table->string('email')->unique()->comment();
             $table->string('phone_number')->comment();
