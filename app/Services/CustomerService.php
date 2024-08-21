@@ -22,6 +22,11 @@ class CustomerService
         return Customer::all();
     }
 
+    public function findOne(int $id): ?Customer
+    {
+        return Customer::findOrFail($id);
+    }
+
     public function create($data): Customer
     {
 

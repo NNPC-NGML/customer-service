@@ -48,6 +48,38 @@ class CustomerController extends Controller
         return CustomerResource::collection($customers);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/customers/{id}",
+     *     operationId="getCustomerById",
+     *     tags={"Customers"},
+     *     summary="Get customer information",
+     *     description="Returns a single customer data",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found"
+     *     )
+     * )
+     */
+
+    public function show(int $id)
+    {
+        $customer = $this->customerService->findOne($id);
+        return new CustomerResource($customer);
+    }
+
     /**
      * @OA\Post(
      *     path="/api/customers",

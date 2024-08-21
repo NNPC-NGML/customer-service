@@ -9,6 +9,7 @@ use App\Services\CustomerService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class CustomerServiceTest extends TestCase
@@ -68,8 +69,28 @@ class CustomerServiceTest extends TestCase
         $customer = $service->create($data);
         $customers = $service->findAll();
 
-        // Assert: Check that the collection contains the correct number of customers
         $this->assertCount(4, $customers);
         $this->assertInstanceOf(Customer::class, $customers->first());
+    }
+
+
+    public function test_it_can_find_a_customer_by_id()
+    {
+        $customer = Customer::factory()->create();
+
+        $service = new CustomerService();
+        $foundCustomer = $service->findOne($customer->id);
+
+        $this->assertInstanceOf(Customer::class, $foundCustomer);
+        $this->assertEquals($customer->id, $foundCustomer->id);
+    }
+
+    public function test_it_throws_exception_when_customer_not_found()
+    {
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $service = new CustomerService();
+        $service->findOne(999);
     }
 }
