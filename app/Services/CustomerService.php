@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\Customer\CustomerCreated;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Collection;
 use App\Jobs\Customer\FormBuilderNotification;
 use Illuminate\Validation\ValidationException;
 
@@ -14,6 +15,12 @@ class CustomerService
 {
 
 
+
+    public function findAll(): Collection
+    {
+
+        return Customer::all();
+    }
 
     public function create($data): Customer
     {
@@ -35,9 +42,6 @@ class CustomerService
         $formBuilderNotifier['entity'] = 'Customer';
         $formBuilderNotifier['entity_id'] = $customerCreated->id;
         $formBuilderNotifier['task_id'] = $customerCreated->task_id;
-
-
-
 
 
         $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");

@@ -5,6 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\CustomerService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+use App\Http\Resources\CustomerResource;
+
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="Customer API",
+ *     description="API Documentation for Customer Management",
+ * )
+ */
 
 class CustomerController extends Controller
 {
@@ -13,6 +23,29 @@ class CustomerController extends Controller
     public function __construct(CustomerService $customerService)
     {
         $this->customerService = $customerService;
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/customers",
+     *     operationId="getCustomersList",
+     *     tags={"Customers"},
+     *     summary="Get list of customers",
+     *     description="Returns list of customers",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Customer")
+     *         )
+     *     )
+     * )
+     */
+    public function index()
+    {
+        $customers = $this->customerService->findAll();
+        return CustomerResource::collection($customers);
     }
 
     /**
@@ -66,7 +99,7 @@ class CustomerController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $this->customerService->createCustomer($data);
+        $this->customerService->create($data);
 
         return response()->json(['message' => 'Customer creation job dispatched.'], 201);
     }
