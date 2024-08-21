@@ -42,11 +42,18 @@ class CustomerService
     public function create(array $data): Customer
     {
 
+        $structuredData['task_id'] = $data['id'];
+        $structuredData['company_name'] = $data['company_name'];
+        $structuredData['email'] = $data['email'];
+        $structuredData['phone_number'] = $data['phone_number'];
+        $structuredData['created_by_user_id'] = $data['created_by_user_id'];
+        $structuredData['status'] = $data['status'];
+        $structuredData['password'] = $data['password'];
         try {
-            $validatedData = $this->validate($data);
+            $validatedData = $this->validate($structuredData);
             $validatedData['password'] = Hash::make($validatedData['password']);
+            $validatedData['task_id'] = $data['id'];
             $customerCreated = Customer::create($validatedData);
-
             $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
             if (is_array($customerQueue) && !empty($customerQueue)) {
                 foreach ($customerQueue as $queue) {
@@ -77,6 +84,7 @@ class CustomerService
             'password' => 'required|string|min:8',
             'created_by_user_id' => 'required|integer|exists:users,id',
             'status' => 'sometimes|required|boolean',
+            'task_id' => 'required'
         ];
 
         if (!$partial) {

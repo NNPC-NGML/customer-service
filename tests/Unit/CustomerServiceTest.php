@@ -22,6 +22,7 @@ class CustomerServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $customerData = [
+            'id' => 4,
             'company_name' => 'Acme Corp',
             'email' => 'john@example.com',
             'phone_number' => '555-1234',
@@ -48,6 +49,7 @@ class CustomerServiceTest extends TestCase
     public function it_throws_a_validation_exception_for_invalid_data()
     {
         $customerData = [
+            'id' => '',
             'company_name' => '',
             'email' => 'invalid_email',
             'phone_number' => '',
