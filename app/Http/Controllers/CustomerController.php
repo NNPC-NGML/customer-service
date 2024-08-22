@@ -77,6 +77,10 @@ class CustomerController extends Controller
     public function show(int $id)
     {
         $customer = $this->customerService->findOne($id);
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
         return new CustomerResource($customer);
     }
 

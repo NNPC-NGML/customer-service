@@ -63,6 +63,8 @@ class Handler extends ExceptionHandler
         //TODO: set debugger falls for production
         if (config('app.debug')) {
             $response['exception'] = get_class($exception);
+            $response['file'] = $exception->getFile();
+            $response['line'] = $exception->getLine();
             $response['trace'] = $exception->getTrace();
         }
 

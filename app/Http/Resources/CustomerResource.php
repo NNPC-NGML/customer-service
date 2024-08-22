@@ -25,7 +25,7 @@ class CustomerResource extends JsonResource
             'status' => (bool)$this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            // 'sites' => CustomerSiteResource::collection($this->whenLoaded('sites')),
+            'sites' => CustomerSiteResource::collection($this->whenLoaded('sites')),
         ];
     }
 }

@@ -28,14 +28,14 @@ class CustomerControllerTest extends TestCase
         $this->actingAsAuthenticatedTestUser();
         $customer = Customer::factory()->create();
         $response = $this->getJson("/api/customers/{$customer->id}");
-        $response->assertStatus(200);
-        // ->assertJson([
-        //     'data' => [
-        //         'id' => $customer->id,
-        //         'company_name' => $customer->company_name,
-        //         'email' => $customer->email,
-        //     ],
-        // ]);
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $customer->id,
+                    'company_name' => $customer->company_name,
+                    'email' => $customer->email,
+                ],
+            ]);
     }
 
     // public function test_show_customer_returns_404_if_not_found()
