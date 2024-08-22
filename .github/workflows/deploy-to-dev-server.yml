@@ -1,4 +1,4 @@
-name: nnpc_service_name_placeholder_deploy
+name: nnpc_customer_deploy
 
 on:
   # push:
@@ -10,7 +10,7 @@ on:
     types: [closed]
 
 jobs:
-  deploy-service_name_placeholder-test:
+  deploy-customer-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
       - name: Run Tests
         run: CI=false php artisan test
 
-  deploy-service_name_placeholder-dev:
+  deploy-customer-dev:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -103,7 +103,7 @@ jobs:
         run: |
           sed -i -e 's:/public/index.php:/index.php:g' public/index.php &&
           sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' public/index.php &&
-          sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=customer:g' .env &&
+          sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=skillz_nnpc_customer:g' .env &&
           sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=skillz_nnpc:g' .env  &&
           sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' public/index.php &&
           sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD=nnpcNGML:g' .env &&
