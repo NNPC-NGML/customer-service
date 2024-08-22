@@ -20,6 +20,7 @@ use App\Http\Controllers\CustomerController;
 Route::middleware('scope.user')->group(function () {
 
     Route::get('/customers', [CustomerController::class, 'index']);
+    Route::get('/customers/{id}', [CustomerController::class, 'show']);
     Route::get('/protected', function () {
         return response()->json(['message' => 'Access granted']);
     });
