@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer_sites', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('task_id')->comment();
             $table->integer("customer_id")->comment();
             $table->string("site_address")->comment();
             $table->integer("ngml_zone_id")->comment();
