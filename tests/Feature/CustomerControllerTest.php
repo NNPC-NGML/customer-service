@@ -37,11 +37,11 @@ class CustomerControllerTest extends TestCase
             ]);
     }
 
-    // public function test_show_customer_returns_404_if_not_found()
-    // {
-    //     $this->actingAsAuthenticatedTestUser();
-    //     $response = $this->getJson('/api/customers/99999');
+    public function test_show_customer_returns_404_if_not_found()
+    {
+        $this->actingAsAuthenticatedTestUser();
+        $response = $this->getJson('/api/customers/99999');
 
-    //     $response->assertStatus(404);
-    // }
+        $response->assertStatus(404);
+    }
 }

@@ -7,6 +7,7 @@ use App\Services\CustomerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Resources\CustomerResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * @OA\Info(
@@ -76,12 +77,13 @@ class CustomerController extends Controller
 
     public function show(int $id)
     {
-        $customer = $this->customerService->findOne($id);
 
-        if (!$customer) {
+        try {
+            $customer = $this->customerService->findOne($id);
+            return new CustomerResource($customer);
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Customer not found'], 404);
         }
-        return new CustomerResource($customer);
     }
 
     /**

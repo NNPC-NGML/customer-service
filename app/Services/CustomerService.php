@@ -25,7 +25,6 @@ class CustomerService
     public function findOne(int $id): Customer
     {
         return Customer::with('sites')->findOrFail($id);
-        // return Customer::findOrFail($id);
     }
 
     public function create($data): Customer
