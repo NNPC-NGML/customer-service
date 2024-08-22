@@ -141,6 +141,27 @@ class DDQService
     }
 
     /**
+     * Validate the provided DDQ group data update.
+     *
+     * @param array $data The data to be validated.
+     * @return array The validated data.
+     * @throws ValidationException If the validation fails.
+     */
+    public function validateDDQGroupUpdate(array $data): array
+    {
+        $validator = Validator::make($data, [
+            'title' => 'sometimes|string|max:255',
+            'status' => 'sometimes|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        return $data;
+    }
+
+    /**
      * Validate the provided DDQ subgroup data.
      *
      * @param array $data The data to be validated.
@@ -153,6 +174,28 @@ class DDQService
             'title' => 'required|string|max:255',
             'customer_ddq_group_id' => 'required|integer',
             'status' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Validate the provided DDQ subgroup data update.
+     *
+     * @param array $data The data to be validated.
+     * @return array The validated data.
+     * @throws ValidationException If the validation fails.
+     */
+    public function validateDDQSubGroupUpdate(array $data): array
+    {
+        $validator = Validator::make($data, [
+            'title' => 'sometimes|string|max:255',
+            'customer_ddq_group_id' => 'sometimes|integer',
+            'status' => 'sometimes|boolean',
         ]);
 
         if ($validator->fails()) {

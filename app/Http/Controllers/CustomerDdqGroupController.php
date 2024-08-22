@@ -6,18 +6,6 @@ use App\Services\DDQService;
 use Illuminate\Http\Request;
 use App\Http\Resources\CustomerDdqGroupResource;
 
-/**
- * @OA\Schema(
- *     schema="CustomerDdqGroup",
- *     type="object",
- *     title="Customer DDQ Group",
- *     @OA\Property(property="id", type="integer", example=1, description="ID of the DDQ Group"),
- *     @OA\Property(property="title", type="string", example="Group Title", description="Title of the DDQ Group"),
- *     @OA\Property(property="status", type="boolean", example=true, description="Status of the DDQ Group"),
- *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation date of the DDQ Group"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", description="Last update date of the DDQ Group")
- * )
- */
 class CustomerDdqGroupController extends Controller
 {
     /**
@@ -170,7 +158,6 @@ class CustomerDdqGroupController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"title", "status"},
      *             @OA\Property(property="title", type="string", example="Updated Group"),
      *             @OA\Property(property="status", type="boolean", example=false)
      *         )
@@ -190,7 +177,7 @@ class CustomerDdqGroupController extends Controller
     public function update(Request $request, int $id)
     {
         try {
-            $data = $this->ddqService->validateDDQGroup($request->all());
+            $data = $this->ddqService->validateDDQGroupUpdate($request->all());
             $group = $this->ddqService->getCustomerDdqGroupById($id);
             $group->update($data);
             return (new CustomerDdqGroupResource($group))->additional([
