@@ -30,41 +30,95 @@ class CustomerService
     public function create($data): Customer
     {
 
-
-        $arrayData = json_decode($data['form_field_answers'], true);
-
-        $structuredData = [];
-
-        foreach ($arrayData as $item) {
-            $structuredData[$item['key']]  = $item['value'];
-        }
-
-        $structuredData['task_id'] = $data['id'];
-
-
-        $customerCreated = Customer::create($structuredData);
-
-        $formBuilderNotifier['entity'] = 'Customer';
-        $formBuilderNotifier['entity_id'] = $customerCreated->id;
-        $formBuilderNotifier['task_id'] = $customerCreated->task_id;
-
-
-        $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
-        if (is_array($customerQueue) && !empty($customerQueue)) {
-            foreach ($customerQueue as $queue) {
-                $queue = trim($queue);
-                if (!empty($queue)) {
-                    Log::info("Dispatching Customer event to queue: " . $queue);
-                    CustomerCreated::dispatch($customerCreated)->onQueue($queue);
-                }
+        Log::info('Starting customer creation process', ['data' => $data]);
+        try {
+            $arrayData = json_decode($data['form_field_answers'], true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \InvalidArgumentException('Invalid JSON in form_field_answers');
             }
-        } else {
-            CustomerCreated::dispatch($customerCreated)->onQueue('formbuilder_queue');
+
+            $structuredData = [];
+            foreach ($arrayData as $item) {
+                $structuredData[$item['key']] = $item['value'];
+            }
+            $structuredData['task_id'] = $data['id'];
+
+            Log::info('Structured data prepared', ['structuredData' => $structuredData]);
+
+            $customerCreated = Customer::create($structuredData);
+
+            $formBuilderNotifier = [
+                'entity' => 'Customer',
+                'entity_id' => $customerCreated->id,
+                'task_id' => $customerCreated->task_id,
+            ];
+
+            $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
+
+            if (is_array($customerQueue) && !empty($customerQueue)) {
+                foreach ($customerQueue as $queue) {
+                    $queue = trim($queue);
+                    if (!empty($queue)) {
+                        Log::info("Dispatching Customer event to queue: " . $queue);
+                        CustomerCreated::dispatch($customerCreated)->onQueue($queue);
+                    }
+                }
+            } else {
+                CustomerCreated::dispatch($customerCreated)->onQueue('formbuilder_queue');
+            }
+            FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
+
+            return $customerCreated;
+        } catch (\Exception $e) {
+            Log::error('Unexpected error during customer creation: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
 
-        FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
 
-        return $customerCreated;
+        // $arrayData = json_decode($data['form_field_answers'], true);
+
+        // $structuredData = [];
+
+        // foreach ($arrayData as $item) {
+        //     $structuredData[$item['key']]  = $item['value'];
+        // }
+
+        // $structuredData['task_id'] = $data['id'];
+
+        // try {
+        //     $customerCreated = Customer::create($structuredData);
+        // } catch (BindingResolutionException $e) {
+
+        //     Log::error('failed to create customer ' . $e->getMessage());
+        // }
+
+
+
+
+        // $formBuilderNotifier['entity'] = 'Customer';
+        // $formBuilderNotifier['entity_id'] = $customerCreated->id;
+        // $formBuilderNotifier['task_id'] = $customerCreated->task_id;
+
+
+        // $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
+        // if (is_array($customerQueue) && !empty($customerQueue)) {
+        //     foreach ($customerQueue as $queue) {
+        //         $queue = trim($queue);
+        //         if (!empty($queue)) {
+        //             Log::info("Dispatching Customer event to queue: " . $queue);
+        //             CustomerCreated::dispatch($customerCreated)->onQueue($queue);
+        //         }
+        //     }
+        // } else {
+        //     CustomerCreated::dispatch($customerCreated)->onQueue('formbuilder_queue');
+        // }
+
+        // FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
+
+        // return $customerCreated;
     }
 
 
