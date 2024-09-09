@@ -46,6 +46,7 @@ class CustomerSiteService
                     if (!empty($queue)) {
                         Log::info("Dispatching Customer event to queue: " . $queue);
                         CustomerSiteCreated::dispatch($customerSiteQueue)->onQueue($queue);
+                        Log::info("After Dispatching Customer event to queue: " . $queue);
                     }
                 }
             } else {
