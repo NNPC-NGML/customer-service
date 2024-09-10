@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerDdqGroup extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'status'
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
 }
