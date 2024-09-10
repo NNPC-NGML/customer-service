@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Jobs\FormData;
+namespace App\Jobs\FormBuilder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
-use Skillz\Nnpcreusable\Models\Tag;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Skillz\Nnpcreusable\Service\FormService;
 use Skillz\Nnpcreusable\Service\NotificationTaskService;
 
-class FormDataUpdated implements ShouldQueue
+class FormBuilderUpdated implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -32,18 +31,8 @@ class FormDataUpdated implements ShouldQueue
      */
     public function handle(): void
     {
-        $tagModel = Tag::all();
-        $fetchedData = $this->data["form_builder"]['tag']["name"];
-        foreach ($tagModel as $tag) {
-            if ($tag->name == $fetchedData) {
-                $operationClass = new $tag->tag_class();
-                $operationClass->{$tag->tag_class_method}($this->data);
-            }
-        }
-
-        // this area can be commented out if you do not need to have the form data saved or updated on your service
         $service = new FormService();
         $data = $this->data;
-        $service->updateFormData($data, $this->id);
+        $service->updateForm($data, $this->id);
     }
 }

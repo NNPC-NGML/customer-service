@@ -26,6 +26,8 @@ class UsersMiddleware
         }
         Auth::setUser(new \App\Models\User($response->json()));
 
+        Auth::setUser(new \App\Models\User($response->json()));
+
         return $next($request);
     }
 }

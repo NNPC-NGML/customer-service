@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Customer;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CustomerControllerTest extends TestCase

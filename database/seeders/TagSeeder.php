@@ -20,14 +20,19 @@ class TagSeeder extends Seeder
         // Seed new data
         $data = [
             [
-                'name' => 'create EOI',
-                'tag_class' => 'App\controllers\EOIController',
-                'tag_class_method' => 'store',
+                'name' => 'Create New Customer',
+                'tag_class' => 'App\Services\CustomerService',
+                'tag_class_method' => 'create',
+            ],
+            [
+                'name' => 'Create New Customer Site',
+                'tag_class' => 'App\Services\CustomerSiteService',
+                'tag_class_method' => 'create',
             ],
         ];
         foreach ($data as $key => $value) {
             $tags = Tag::create($value);
-            TagCreated::dispatch($tags)->onQueue('formbuilder_queue');
+            TagCreated::dispatch($tags->toArray())->onQueue('formbuilder_queue');
         }
         $allTags = Tag::all();
     }
