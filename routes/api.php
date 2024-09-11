@@ -37,10 +37,10 @@ Route::middleware('scope.user')->group(function () {
     Route::get('ddq-subgroups/{id}', [CustomerDdqSubGroupController::class, 'show']);
     Route::put('ddq-subgroups/{id}', [CustomerDdqSubGroupController::class, 'update']);
     Route::delete('ddq-subgroups/{id}', [CustomerDdqSubGroupController::class, 'destroy']);
-    // Route::post('ddqs/approve/{id}', [CustomerDdqController::class, 'approve']);
-    // Route::post('ddqs/decline/{id}', [CustomerDdqController::class, 'decline']);
+    Route::post('ddqs/approve/{id}', [CustomerDdqController::class, 'approve']);
+    Route::post('ddqs/decline/{id}', [CustomerDdqController::class, 'decline']);
     // // Route::get('ddqs/view/{customer_id}/{site_id}/{group_id}/{subgroup_id}', [CustomerDdqController::class, 'showDDQ']);
-    // Route::get('ddqs/view/{id}', [CustomerDdqController::class, 'viewDDQ']);
+    Route::get('ddqs/view/{id}', [CustomerDdqController::class, 'viewDDQ']);
 });
 
 

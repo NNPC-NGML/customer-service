@@ -57,7 +57,7 @@ class CustomerDdqSubGroupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage(),
-            ], $th->getCode() ?: 500);
+            ], 500);
         }
     }
 
@@ -99,7 +99,7 @@ class CustomerDdqSubGroupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage(),
-            ], $th->getCode() ?: 400);
+            ],  400);
         }
     }
 
@@ -137,7 +137,7 @@ class CustomerDdqSubGroupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage(),
-            ], $th->getCode() ?: 404);
+            ],  404);
         }
     }
 
@@ -184,7 +184,7 @@ class CustomerDdqSubGroupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage(),
-            ], $th->getCode() ?: 400);
+            ],  400);
         }
     }
 
@@ -222,7 +222,7 @@ class CustomerDdqSubGroupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage(),
-            ], $th->getCode() ?: 404);
+            ],  404);
         }
     }
 }
