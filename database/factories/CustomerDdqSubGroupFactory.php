@@ -17,7 +17,9 @@ class CustomerDdqSubGroupFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence(),
+            'customer_ddq_group_id' => $this->faker->numberBetween(1, 10),
+            'status' => $this->faker->boolean(),
         ];
     }
 }

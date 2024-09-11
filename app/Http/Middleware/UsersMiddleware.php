@@ -24,6 +24,7 @@ class UsersMiddleware
         if (!$response->ok()) {
             abort(401, 'unauthorized');
         }
+        Auth::setUser(new \App\Models\User($response->json()));
 
         Auth::setUser(new \App\Models\User($response->json()));
 
