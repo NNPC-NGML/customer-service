@@ -26,9 +26,9 @@ Route::middleware('scope.user')->group(function () {
         return response()->json(['message' => 'Access granted']);
     });
     Route::get('customer-ddq-existings', [CustomerDdqExistingController::class, 'index']);
-    Route::post('customer-ddq-existings', [CustomerDdqExistingController::class, 'store']);
+    // Route::post('customer-ddq-existings', [CustomerDdqExistingController::class, 'store']);                      // app\Services\CustomerDdqExistingService > create
     Route::get('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'show']);
-    Route::put('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'update']);
+    // Route::put('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'update']);                 // app\Services\CustomerDdqExistingService > update
     Route::delete('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'destroy']);
 });
 
