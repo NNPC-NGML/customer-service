@@ -35,27 +35,6 @@ class CustomerDdqExistingService
             'image/x-icon' => 'ico',
             'image/avif' => 'avif',
 
-            // Videos
-            'video/mp4' => 'mp4',
-            'video/x-msvideo' => 'avi',
-            'video/x-matroska' => 'mkv',
-            'video/quicktime' => 'mov',
-            'video/x-flv' => 'flv',
-            'video/webm' => 'webm',
-            'video/mpeg' => 'mpeg',
-            'video/3gpp' => '3gp',
-            'video/3gpp2' => '3g2',
-
-            // Audio
-            'audio/mpeg' => 'mp3',
-            'audio/ogg' => 'ogg',
-            'audio/wav' => 'wav',
-            'audio/x-m4a' => 'm4a',
-            'audio/flac' => 'flac',
-            'audio/aac' => 'aac',
-            'audio/x-wav' => 'wav',
-            'audio/midi' => 'midi',
-
             // Documents
             'application/pdf' => 'pdf',
             'application/msword' => 'doc',
@@ -78,7 +57,7 @@ class CustomerDdqExistingService
             'text/css' => 'css',
             'text/javascript' => 'js',
 
-                // Default to binary for unknown types
+            // Default to binary for unknown types
             default => 'bin',
         };
     }
@@ -121,6 +100,9 @@ class CustomerDdqExistingService
 
         // Get the file extension based on the MIME type
         $extension = $this->getFileExtension($fileMimeType);
+        if($extension === 'bin') {
+            throw new \InvalidArgumentException('Unsupported file type');
+        }
 
         // Generate a unique file name for storage
         $tmpName = Str::random(10) . '-' . time() .  '.' . $extension;
