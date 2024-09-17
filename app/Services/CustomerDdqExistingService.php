@@ -46,16 +46,7 @@ class CustomerDdqExistingService
             'text/plain' => 'txt',
             'text/csv' => 'csv',
             'application/rtf' => 'rtf',
-            'application/zip' => 'zip',
-            'application/x-7z-compressed' => '7z',
-            'application/x-rar-compressed' => 'rar',
-            'application/x-tar' => 'tar',
-            'application/gzip' => 'gz',
             'application/json' => 'json',
-            'application/xml' => 'xml',
-            'text/html' => 'html',
-            'text/css' => 'css',
-            'text/javascript' => 'js',
 
             // Default to binary for unknown types
             default => 'bin',
@@ -220,10 +211,6 @@ class CustomerDdqExistingService
 
             // Handle base64 file data if present
             if (isset($structuredData['file_base64']) && !empty($structuredData['file_base64'])) {
-                $fileData = base64_decode($structuredData['file_base64']);
-                if ($fileData === false) {
-                    throw new \InvalidArgumentException('Invalid base64 file data');
-                }
                 $fileObject = $this->uploadBase64($structuredData['file_base64']);
                 $structuredData['file_path'] = $fileObject->location;
             } else {
@@ -296,11 +283,6 @@ class CustomerDdqExistingService
 
             // Handle base64 file data if present
             if (isset($structuredData['file_base64']) && !empty($structuredData['file_base64'])) {
-                $fileData = base64_decode($structuredData['file_base64']);
-                if ($fileData === false) {
-                    throw new \InvalidArgumentException('Invalid base64 file data');
-                }
-
                 // Upload the new file and delete the old file if necessary
                 $fileObject = $this->uploadBase64($structuredData['file_base64']);
                 $structuredData['file_path'] = $fileObject->location;
@@ -309,9 +291,6 @@ class CustomerDdqExistingService
                 if ($customerDdqExisting->file_path) {
                     Storage::disk(config('filesystems.default'))->delete($customerDdqExisting->file_path);
                 }
-            } else {
-                // If no new file, retain the old file path
-                $structuredData['file_path'] = $customerDdqExisting->file_path;
             }
 
             Log::info('Structured data prepared for update', ['structuredData' => $structuredData]);
