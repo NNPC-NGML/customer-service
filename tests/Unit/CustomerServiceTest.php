@@ -30,6 +30,8 @@ class CustomerServiceTest extends TestCase
                 ['key' => 'status', 'value' => true],
             ]),
             'id' => 123,
+            'user_id' =>
+            $user->id
         ];
 
         $customerService = new CustomerService();
@@ -63,6 +65,8 @@ class CustomerServiceTest extends TestCase
                 ['key' => 'status', 'value' => true],
             ]),
             'id' => 123,
+            'user_id' =>
+            $user->id
         ];
 
         $service = new CustomerService();
