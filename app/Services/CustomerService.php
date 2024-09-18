@@ -16,10 +16,15 @@ class CustomerService
 
 
 
+    // public function findAll(): Collection
+    // {
+
+    //     return Customer::all();
+    // }
+
     public function findAll(): Collection
     {
-
-        return Customer::all();
+        return Customer::orderBy('created_at', 'desc')->get();
     }
 
     public function findOne(int $id): Customer
