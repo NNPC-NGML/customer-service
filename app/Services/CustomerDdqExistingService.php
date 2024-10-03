@@ -225,8 +225,8 @@ class CustomerDdqExistingService
 
             // Dispatch notification to the queue
             $formBuilderNotifier = [
-                'entity' => 'Customer DDQ Existing',
-                'entity_id' => $customerDdqExistingCreated->id,
+                'entity' => 'customer',
+                'entity_id' => $ddq_data['customer_id'],
                 'task_id' => $structuredData['task_id'],
             ];
             FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
