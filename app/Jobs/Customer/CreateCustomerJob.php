@@ -38,6 +38,6 @@ class CreateCustomerJob implements ShouldQueue
     public function handle(): void
     {
         $service = new CustomerService();
-        $service->createCustomer($this->data);
+        $service->create($this->data);
     }
 }
