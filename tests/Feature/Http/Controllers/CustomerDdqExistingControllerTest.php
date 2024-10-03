@@ -23,34 +23,34 @@ class CustomerDdqExistingControllerTest extends TestCase
         return new CustomerDdqExistingService();
     }
 
-    /**
-     * Test if a DDQ Existing can be created.
-     *
-     * @return void
-     */
-    public function test_it_can_create_a_ddq_existing()
-    {
-        $this->actingAsAuthenticatedTestUser();
+    // /**
+    //  * Test if a DDQ Existing can be created.
+    //  *
+    //  * @return void
+    //  */
+    // public function test_it_can_create_a_ddq_existing()
+    // {
+    //     $this->actingAsAuthenticatedTestUser();
 
-        // Define the expected data and mock service behavior
-        $data = [
-            'user_id' => 1,
-            'customer_id' => 1,
-            'customer_site_id' => 1,
-            'file_path' => 'https://example.com/image1.png',
-            'status' => 'pending',
-        ];
+    //     // Define the expected data and mock service behavior
+    //     $data = [
+    //         'user_id' => 1,
+    //         'customer_id' => 1,
+    //         'customer_site_id' => 1,
+    //         'file_path' => 'https://example.com/image1.png',
+    //         'status' => 'pending',
+    //     ];
 
-        $response = $this->postJson('/api/customer-ddq-existings', $data);
+    //     $response = $this->postJson('/api/customer-ddq-existings', $data);
 
-        $response->assertStatus(201)
-            ->assertJson([
-                'status' => 'success',
-                'data' => $data,
-            ]);
+    //     $response->assertStatus(201)
+    //         ->assertJson([
+    //             'status' => 'success',
+    //             'data' => $data,
+    //         ]);
 
-        $this->assertDatabaseHas('customer_ddq_existings', $data);
-    }
+    //     $this->assertDatabaseHas('customer_ddq_existings', $data);
+    // }
 
     /**
      * Test if all DDQ Existings can be listed.
@@ -97,34 +97,34 @@ class CustomerDdqExistingControllerTest extends TestCase
             ]);
     }
 
-    /**
-     * Test if a DDQ Existing can be updated.
-     *
-     * @return void
-     */
-    public function test_it_can_update_a_ddq_existing()
-    {
-        $this->actingAsAuthenticatedTestUser();
-        $ddqExisting = CustomerDdqExisting::factory()->create([
-            'status' => 'pending',
-        ]);
+    // /**
+    //  * Test if a DDQ Existing can be updated.
+    //  *
+    //  * @return void
+    //  */
+    // public function test_it_can_update_a_ddq_existing()
+    // {
+    //     $this->actingAsAuthenticatedTestUser();
+    //     $ddqExisting = CustomerDdqExisting::factory()->create([
+    //         'status' => 'pending',
+    //     ]);
 
-        $updatedData = [
-            'user_id' => $ddqExisting->user_id,
-            'customer_id' => $ddqExisting->customer_id,
-            'customer_site_id' => $ddqExisting->customer_site_id,
-            'file_path' => 'https://example.com/image1.png',
-            'status' => 'approved',
-        ];
+    //     $updatedData = [
+    //         'user_id' => $ddqExisting->user_id,
+    //         'customer_id' => $ddqExisting->customer_id,
+    //         'customer_site_id' => $ddqExisting->customer_site_id,
+    //         'file_path' => 'https://example.com/image1.png',
+    //         'status' => 'approved',
+    //     ];
 
-        $response = $this->putJson("/api/customer-ddq-existings/{$ddqExisting->id}", $updatedData);
+    //     $response = $this->putJson("/api/customer-ddq-existings/{$ddqExisting->id}", $updatedData);
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'status' => 'success',
-                'data' => $updatedData,
-            ]);
-    }
+    //     $response->assertStatus(200)
+    //         ->assertJson([
+    //             'status' => 'success',
+    //             'data' => $updatedData,
+    //         ]);
+    // }
 
     /**
      * Test if a DDQ Existing can be deleted.

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\CustomerSite;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\Customer\CustomerCreated;
-use App\Jobs\Customer\CustomerSiteCreated;
+use App\Jobs\CustomerSite\CustomerSiteCreated;
 use App\Jobs\Customer\FormBuilderNotification;
 
 class CustomerSiteService

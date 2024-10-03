@@ -1,38 +1,29 @@
 <?php
 
-namespace App\Jobs\Customer;
+namespace App\Jobs\DesignationAssignment;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Skillz\Nnpcreusable\Models\DesignationUser;
 
-class CustomerSiteCreated implements ShouldQueue
+class DesignationAssignmentUpdated implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $data;
-
-    /**
-     * Create a new job instance.
-     *
-     * @param array $data The data for creating the designation
-     * @return void
-     */
+    private array $data;
     public function __construct(array $data)
     {
         $this->data = $data;
     }
-
-
-
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        //
+        $model = DesignationUser::where(["id" => $this->data["id"]])->first();
+        if ($model) {
+            $model->update($this->data);
+        }
     }
 
     public function getData(): array

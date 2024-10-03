@@ -1,31 +1,30 @@
 <?php
 
-namespace App\Jobs\Customer;
+namespace App\Jobs\Unit;
 
-use App\Models\Customer;
-use App\Services\CustomerService;
+use Skillz\Nnpcreusable\Service\UnitService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-// use Skillz\Nnpcreusable\Service\CustomerService;
+use Illuminate\Support\Facades\Log;
 
-class CreateCustomerJob implements ShouldQueue
+class UnitCreated implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-   // protected $data
-
-     /**
-     * creating a new job instance.
+    /**
+     * The data for creating the unit.
      *
-     * @param array $data
+     * @var array
      */
-    public array $data;
+    private array $data;
 
     /**
      * Create a new job instance.
+     *
+     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -34,10 +33,18 @@ class CreateCustomerJob implements ShouldQueue
 
     /**
      * Execute the job.
+     *
+     * @param UnitService $service
+     * @return void
      */
     public function handle(): void
     {
-        $service = new CustomerService();
-        $service->create($this->data);
+        $service = new  UnitService();
+        $service->createUnit($this->data);
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
     }
 }
