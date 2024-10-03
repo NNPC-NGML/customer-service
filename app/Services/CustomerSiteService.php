@@ -50,7 +50,7 @@ class CustomerSiteService
                     }
                 }
             } else {
-                CustomerSiteCreated::dispatch($customerSiteCreated)->onQueue('formbuilder_queue');
+                CustomerSiteCreated::dispatch($customerSiteCreated->toArray())->onQueue('formbuilder_queue');
             }
 
             FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');

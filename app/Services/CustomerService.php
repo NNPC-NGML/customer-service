@@ -16,10 +16,15 @@ class CustomerService
 
 
 
+    // public function findAll(): Collection
+    // {
+
+    //     return Customer::all();
+    // }
+
     public function findAll(): Collection
     {
-
-        return Customer::all();
+        return Customer::orderBy('created_at', 'desc')->get();
     }
 
     public function findOne(int $id): Customer
@@ -42,6 +47,7 @@ class CustomerService
                 $structuredData[$item['key']] = $item['value'];
             }
             $structuredData['task_id'] = $data['id'];
+            $structuredData['created_by_user_id'] = $data['user_id'];
 
             Log::info('Structured data prepared', ['structuredData' => $structuredData]);
 
@@ -60,11 +66,11 @@ class CustomerService
                     $queue = trim($queue);
                     if (!empty($queue)) {
                         Log::info("Dispatching Customer event to queue: " . $queue);
-                        CustomerCreated::dispatch($customerCreated)->onQueue($queue);
+                        CustomerCreated::dispatch($customerCreated->toArray())->onQueue($queue);
                     }
                 }
             } else {
-                CustomerCreated::dispatch($customerCreated)->onQueue('formbuilder_queue');
+                CustomerCreated::dispatch($customerCreated->toArray())->onQueue('formbuilder_queue');
             }
             FormBuilderNotification::dispatch($formBuilderNotifier)->onQueue('formbuilder_queue');
 
