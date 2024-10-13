@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string("site_contact_person_phone_number")->comment();
             $table->string("site_contact_person_signature")->nullable()->comment();
             $table->boolean("site_existing_status")->default(0)->comment();
-            $table->integer("created_by_user_id")->comment();
+            $table->string('rate')->nullable()->comment("this holds the value agreed between both parties");
+            $table->integer("created_by_user_id")->nullable()->comment();
             $table->boolean("status")->comment();
             $table->timestamps();
         });
