@@ -30,7 +30,7 @@ class FormBuilderDeleted implements ShouldQueue
      */
     public function handle(): void
     {
-        $service = new FormService;
+        $service = new FormService();
         $service->destroyForm($this->id);
     }
 }

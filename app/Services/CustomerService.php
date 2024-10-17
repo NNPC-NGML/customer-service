@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\Customer\CustomerCreated;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Jobs\Customer\FormBuilderNotification;
+use App\Jobs\FormData\FormBuilderNotification;
 use Illuminate\Validation\ValidationException;
 
 class CustomerService
@@ -56,7 +56,7 @@ class CustomerService
             $formBuilderNotifier = [
                 'entity' => 'Customer',
                 'entity_id' => $customerCreated->id,
-                'task_id' => $customerCreated->task_id,
+                'task_id' => $data['id'],
             ];
 
             $customerQueue = config("nnpcreusable.CUSTOMER_CREATED");
