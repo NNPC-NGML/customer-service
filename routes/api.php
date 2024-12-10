@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerEoiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
@@ -30,6 +31,9 @@ Route::middleware('scope.user')->group(function () {
     Route::get('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'show']);
     // Route::put('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'update']);                 // app\Services\CustomerDdqExistingService > update
     Route::delete('customer-ddq-existings/{id}', [CustomerDdqExistingController::class, 'destroy']);
+    Route::get('customer-eois', [CustomerEoiController::class, 'index']);
+    Route::get('customer-eois/{id}', [CustomerEoiController::class, 'show']);
+    Route::delete('customer-eois/{id}', [CustomerEoiController::class, 'destroy']);
 });
 
 
