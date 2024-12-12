@@ -34,6 +34,11 @@ class TagSeeder extends Seeder
                 'tag_class' => 'App\Services\CustomerDdqExistingService.php',
                 'tag_class_method' => 'create',
             ],
+            [
+                'name' => 'Create Customer EOI',
+                'tag_class' => 'App\Services\CustomerEoiService.php',
+                'tag_class_method' => 'create',
+            ],
         ];
         foreach ($data as $key => $value) {
             $tags = Tag::create($value);

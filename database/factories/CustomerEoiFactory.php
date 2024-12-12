@@ -17,7 +17,11 @@ class CustomerEoiFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => $this->faker->numberBetween(1, 100),
+            'customer_id' => $this->faker->numberBetween(1, 100),
+            'customer_site_id' => $this->faker->numberBetween(1, 100),
+            'file_path' => $this->faker->imageUrl(),
+            'status' => $this->faker->randomElement(['pending', 'approved', 'rejected']),
         ];
     }
 }
