@@ -60,10 +60,10 @@ jobs:
           sed -i -e 's:CUSTOMER_DELETED=forge:CUSTOMER_DELETED=automator_queue,formbuilder_queue,gas_queue,billing_queue:g' .env &&
           sed -i -e 's:CUSTOMER_SITE_CREATED=forge:CUSTOMER_SITE_CREATED=automator_queue,formbuilder_queue,gas_queue,billing_queue:g' .env &&
           sed -i -e 's:CUSTOMER_SITE_UPDATED=forge:CUSTOMER_SITE_UPDATED=automator_queue,formbuilder_queue,gas_queue,billing_queue:g' .env &&
-          sed -i -e 's:CUSTOMER_SITE_DELETED=forge:CUSTOMER_SITE_DELETED=automator_queue,formbuilder_queue,gas_queue,billing_queue:g' .env &&
-                   
-         
-          
+          sed -i -e 's:CUSTOMER_SITE_DELETED=forge:CUSTOMER_SITE_DELETED=automator_queue,formbuilder_queue,gas_queue,billing_queue:g' .env
+
+
+
 
       - name: Find and replace in document
         run: |
