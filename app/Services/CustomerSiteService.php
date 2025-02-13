@@ -6,7 +6,7 @@ use App\Models\CustomerSite;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\Customer\CustomerCreated;
 use App\Jobs\CustomerSite\CustomerSiteCreated;
-use App\Jobs\Customer\FormBuilderNotification;
+use App\Jobs\FormData\FormBuilderNotification;
 
 class CustomerSiteService
 {

@@ -20,7 +20,7 @@ class FormDataUpdated implements ShouldQueue
      * Create a new job instance.
      */
     private $data;
-    private int $id;
+    private  $id;
     public function __construct(array $data)
     {
         $this->data = $data;
