@@ -5,11 +5,12 @@ namespace Tests\Feature\Job;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Jobs\Customer\FormBuilderNotification;
+use App\Jobs\FormData\FormBuilderNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FormBuilderNotificationTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      */
